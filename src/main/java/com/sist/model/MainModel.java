@@ -32,6 +32,7 @@ import jakarta.servlet.http.HttpServletResponse;
  *                      errorPage="error.jsp"
  *                      => 기본 : forward를 사용하고 있다
  *                      *** URL주소 (request를 가지고 있다)
+ *                      
  */
 @Controller
 public class MainModel {
