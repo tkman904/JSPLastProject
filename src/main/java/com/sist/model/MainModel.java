@@ -262,6 +262,21 @@ public class MainModel {
 	  request.setAttribute("lList", lList);
 	  
 	  // 오늘의 쉐프 / 인기 있는 레시피 5
+	  ChefVO cvo = MainDAO.mainTopChefData();
+	  request.setAttribute("cvo", cvo);
+	  List<RecipeVO> rList = MainDAO.mainRecipeTop5();
+	  for(RecipeVO rvo : rList) {
+		  String data = rvo.getPoster();
+		  data = data.substring(data.indexOf("recipe/")+1);
+		  //System.out.println("data: "+data);
+		  data = data.substring(data.indexOf("/")+1, data.indexOf("/")+11);
+		  StringTokenizer st = new StringTokenizer(data, "/");
+		  rvo.setYear(st.nextToken());
+		  rvo.setMonth(st.nextToken());
+		  rvo.setDay(st.nextToken());
+	  }
+	  request.setAttribute("rList", rList);
+	  
 	  // 오늘의 뉴스
 	  // Cookie
 	  // main_jsp => 화면 

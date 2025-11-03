@@ -62,4 +62,34 @@ public class MainDAO {
 	}
 	// Cookie
 	// 뉴스, 실시간 동영상(레시피)
+	
+	/*
+	      <select id="mainTopChefData" resultType="ChefVO">
+		    SELECT *
+		    FROM (SELECT * FROM chef 
+		    	ORDER BY DBMS_RANDOM.VALUE
+		    )
+		    WHERE ROWNUM=1
+		  </select>
+		  <select id="mainRecipeTop5" resultType="com.sist.vo.RecipeVO">
+		    SELECT no, poster, title, rownum
+		    FROM (SELECT no, poster, title
+		    FROM recipe
+		    ORDER BY no DESC)
+		    WHERE ROWNUM&lt;=5
+		  </select>
+	 */
+	public static ChefVO mainTopChefData() {
+		SqlSession session = ssf.openSession();
+		ChefVO vo = session.selectOne("mainTopChefData");
+		session.close();
+		return vo;
+	}
+	
+	public static List<RecipeVO> mainRecipeTop5() {
+		SqlSession session = ssf.openSession();
+		List<RecipeVO> list = session.selectList("mainRecipeTop5");
+		session.close();
+		return list;
+	}
 }
