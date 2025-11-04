@@ -43,6 +43,46 @@ public class RecipeDAO {
 	}
 	
 	// 레시피 목록
+	/*
+	 *    <select id="recipeListData" resultType="com.sist.vo.RecipeVO" parameterType="hashmap">
+		    SELECT no, title, chef, poster, hit, likecount, replycount, num
+		    FROM (SELECT no, title, chef, poster, hit, likecount, replycount, rownum as num
+		    FROM (SELECT no, title, chef, poster, hit, likecount, replycount
+		    FROM recipe ORDER BY no ASC))
+		    WHERE num BETWEEN #{start} AND #{end}
+		  </select>
+		  <select id="recipleTotalPage" resultType="int">
+		    SELECT CEIL(COUNT(*)/12.0)
+		    FROM recipe
+		  </select>
+	 * 
+	 */
+	public static List<RecipeVO> recipeListData(Map map) {
+		SqlSession session = ssf.openSession();
+		List<RecipeVO> list = session.selectList("recipeListData", map);
+		session.close();
+		return list;
+	}
+	
+	public static int recipleTotalPage() {
+		SqlSession session = ssf.openSession();
+		int total = session.selectOne("recipleTotalPage");
+		session.close();
+		return total;
+	}
+	
+	/*
+	      <select id="recipeCount" resultType="int">
+		    SELECT COUNT(*)
+		    FROM recipe
+		  </select>
+	 */
+	public static int recipeCount() {
+		SqlSession session = ssf.openSession();
+		int count = session.selectOne("recipeCount");
+		session.close();
+		return count;
+	}
 	// 쉐프 상세보기
 	// 레시피 상세보기
 	// 레시피 등록 ****

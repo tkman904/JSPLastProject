@@ -12,7 +12,7 @@ import lombok.Data;
  */
 @Data
 public class RecipeVO {
-	private int no, hit;
+	private int no, hit, likecount, jjimcount, replycount;
 	private String title, poster, chef, link;
 	private String year, month, day;
 }

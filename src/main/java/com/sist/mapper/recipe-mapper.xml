@@ -3,7 +3,7 @@
 <mapper namespace="com.sist.mapper.recipe-mapper">
   <!-- 쉐프 목록 출력 -->
   <select id="chefListData" resultType="ChefVO" parameterType="hashmap">
-    SELECT no, chef, poster, mem_cont1, mem_cont2, mem_cont7, mem_cont3, num
+    SELECT no, chef as poster, poster as chef, mem_cont1, mem_cont2, mem_cont7, mem_cont3, num
     FROM (SELECT no, chef, poster, mem_cont1, mem_cont2, mem_cont7, mem_cont3, rownum as num
     FROM (SELECT no, chef, poster, mem_cont1, mem_cont2, mem_cont7, mem_cont3
     FROM chef ORDER BY no ASC))
@@ -11,5 +11,22 @@
   </select>
   <select id="chefTotalPage" resultType="int">
     SELECT CEIL(COUNT(*)/30.0) FROM chef
+  </select>
+  
+  <!-- 레시피 목록 출력 -->
+  <select id="recipeListData" resultType="com.sist.vo.RecipeVO" parameterType="hashmap">
+    SELECT no, title, chef, poster, hit, likecount, replycount, num
+    FROM (SELECT no, title, chef, poster, hit, likecount, replycount, rownum as num
+    FROM (SELECT no, title, chef, poster, hit, likecount, replycount
+    FROM recipe ORDER BY no ASC))
+    WHERE num BETWEEN #{start} AND #{end}
+  </select>
+  <select id="recipleTotalPage" resultType="int">
+    SELECT CEIL(COUNT(*)/12.0)
+    FROM recipe
+  </select>
+  <select id="recipeCount" resultType="int">
+    SELECT COUNT(*)
+    FROM recipe
   </select>
 </mapper>

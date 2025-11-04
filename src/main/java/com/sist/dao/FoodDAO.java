@@ -69,4 +69,26 @@ public class FoodDAO {
 	   }
 	   return total;
    }
+   
+   /*
+          <update id="foodHitIncrement" parameterType="int">
+		    UPDATE menupan_food SET
+		    hit=hit+1
+		    <include refid="where-fno"/>
+		  </update>
+		  <select id="foodDetailData" resultType="FoodVO" parameterType="int">
+		    SELECT * FROM menupan_food
+		    <include refid="where-fno"/>
+		  </select>
+    */
+   // 상세보기
+   public static FoodVO foodDetailData(int fno) {
+	   SqlSession session = ssf.openSession(true);
+	   session.update("foodHitIncrement", fno);
+	   // insert / update / delete => commit
+	   //session.commit();
+	   FoodVO vo = session.selectOne("foodDetailData", fno);
+	   session.close();
+	   return vo;
+   }
 }

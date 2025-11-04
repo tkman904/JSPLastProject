@@ -74,4 +74,36 @@ public class FoodModel {
 	   request.setAttribute("main_jsp", "../food/list.jsp");
 	   return "../main/main.jsp";
    }
+   
+   /*
+    *   Spring => JSP
+    *   | include / forward => request를 공유
+    *   | sendRedirect => request가 초기화
+    *   | MVC => 모든 화면 DispatcherServlet이다
+    *                    -----------------
+    *                     => .do
+    *                     => 화면 변경 => HTML만 덮어쓰고 있다
+    */
+   @RequestMapping("food/detail.do")
+   public String food_detail(HttpServletRequest request, HttpServletResponse response) {
+	   String fno = request.getParameter("fno");
+	   String page = request.getParameter("page");
+	   FoodVO vo = FoodDAO.foodDetailData(Integer.parseInt(fno));
+	   request.setAttribute("vo", vo);
+	   request.setAttribute("page", page);
+	   // String food_detail(int fno)
+	   // String food_detail(FoodVO vo)
+	   // => 스프링 : 전송 객체 / 사용자 요청값 Model
+	   // => request는 사용하지 않는다
+	   request.setAttribute("main_jsp", "../food/detail.jsp");
+	   return "../main/main.jsp";
+   }
+   
+   // food_ // goods_ // recipe_
+   @RequestMapping("food/detail_before.do")
+   public String food_detail_before(HttpServletRequest request, HttpServletResponse response) {
+	   String fno = request.getParameter("fno");
+	   String page = request.getParameter("page");
+	   return "redirect:../food/detail.do?fno="+fno+"&page="+page;
+   }
 }

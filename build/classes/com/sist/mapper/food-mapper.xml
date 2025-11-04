@@ -1,14 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sist.mapper.food-mapper">
+  <sql id="select-food">
+    SELECT fno,name,type,address,poster,likecount,replycount
+  </sql>
   <select id="foodListData" resultType="FoodVO" parameterType="hashmap">
-    SELECT fno,name,type,address,poster,likecount,replycount,num
-    FROM (SELECT fno,name,type,address,poster,likecount,replycount,rownum as num
-    FROM (SELECT fno,name,type,address,poster,likecount,replycount 
+    <include refid="select-food"/>,num
+    FROM (<include refid="select-food"/>,rownum as num
+    FROM (<include refid="select-food"/>
     FROM menupan_food ORDER BY fno ASC))
     WHERE num BETWEEN #{start} AND #{end}
   </select>
   <select id="foodTotalPage" resultType="int">
     SELECT CEIL(COUNT(*)/12.0) FROM menupan_food
+  </select>
+  
+  <!-- 상세보기 -->
+  <!-- SQL : 반복되는 SQL문장을 저장후에 재사용 -->
+  <sql id="where-fno">
+    WHERE fno=#{fno}
+  </sql>
+  <update id="foodHitIncrement" parameterType="int">
+    UPDATE menupan_food SET
+    hit=hit+1
+    <include refid="where-fno"/>
+  </update>
+  <select id="foodDetailData" resultType="FoodVO" parameterType="int">
+    SELECT * FROM menupan_food
+    <include refid="where-fno"/>
   </select>
 </mapper>
