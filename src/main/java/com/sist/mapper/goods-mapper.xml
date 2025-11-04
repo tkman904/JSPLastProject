@@ -19,8 +19,20 @@
     FROM ${goods} ORDER BY no ASC))
     WHERE num BETWEEN #{start} AND #{end}
   </select>
+  
   <select id="goodsTotalPage" resultType="int" parameterType="hashmap">
     SELECT CEIL(COUNT(*)/12.0)
     FROM ${goods}
+  </select>
+  
+  <update id="goodsHitIncrement" parameterType="hashmap">
+    UPDATE ${goods} SET
+    hit=hit+1
+    WHERE no=#{no}
+  </update>
+  
+  <select id="goodsDetailData" resultType="GoodsVO" parameterType="hashmap">
+    SELECT * FROM ${goods}
+    WHERE no=#{no}
   </select>
 </mapper>

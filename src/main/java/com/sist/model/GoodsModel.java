@@ -82,6 +82,16 @@ public class GoodsModel {
     	String page = request.getParameter("page");
     	String cno = request.getParameter("cno");
     	
+    	Map map = new HashMap();
+    	map.put("no", no);
+    	// #{no} ${goods}
+    	map.put("goods", table_name[Integer.parseInt(cno)]);
+    	GoodsVO vo = GoodsDAO.goodsDetailData(map);
+    	
+    	request.setAttribute("vo", vo);
+    	request.setAttribute("cno", cno);
+    	request.setAttribute("page", page);
+    	
     	request.setAttribute("main_jsp", "../goods/detail.jsp");
     	return "../main/main.jsp";
     }

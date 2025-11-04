@@ -117,7 +117,7 @@
                                     <div class="dropdown-menu" aria-labelledby="yummyDropdown">
                                         <a class="dropdown-item" href="index.html">공지사항</a>
                                         <%-- 지도 이용 --%>
-                                        <a class="dropdown-item" href="archive.html">자유게시판</a>
+                                        <a class="dropdown-item" href="../board/list.do">자유게시판</a>
                                         <a class="dropdown-item" href="single.html">묻고답하기</a>
                                         <%-- 네이버 카페 / 블로그 : 형태소 분석 --%>
                                         <a class="dropdown-item" href="single.html">후기게시판</a>
