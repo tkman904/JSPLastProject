@@ -1,5 +1,6 @@
 package com.sist.model;
 
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -93,12 +94,101 @@ public class BoardModel {
 	public String board_detail(HttpServletRequest request, HttpServletResponse response) {
 		String no = request.getParameter("no");
 		String page = request.getParameter("page");
-		BoardVO vo = BoardDAO.boardDetailData(Integer.parseInt(no));
+		String type = request.getParameter("type");
+		if(type==null)
+			type = "0";
+		BoardVO vo = BoardDAO.boardDetailData(Integer.parseInt(no), Integer.parseInt(type));
 		
 		request.setAttribute("vo", vo);
 		request.setAttribute("page", page);
 		
 		request.setAttribute("main_jsp", "../board/detail.jsp");
 		return "../main/main.jsp";
+	}
+	
+	/*
+	 *  Spring
+	 *  ------
+	 *  | String : 화면 변경
+	 *  |          forward / redirect
+	 *  | void   : JSON
+	 */
+	@RequestMapping("board/delete.do")
+	public void board_delete(HttpServletRequest request, HttpServletResponse response) {
+		// 1. 사용자 전송값 data:{"no":no,"pwd":pwd}
+		// 2. => ?no=1&pwd=1234
+		// vue => axios => params : {"no":no,"pwd":pwd}
+		String no = request.getParameter("no");
+		String pwd = request.getParameter("pwd");
+		// => DAO로 전송 => 결과값
+		String res = BoardDAO.boardDelete(Integer.parseInt(no), pwd);
+		
+		try {
+			response.setContentType("text/plain;charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			out.write(res);
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	@RequestMapping("board/update.do")
+	public String board_update(HttpServletRequest request, HttpServletResponse response) {
+		String no = request.getParameter("no");
+		String page = request.getParameter("page");
+		BoardVO vo = BoardDAO.boardUpdateData(Integer.parseInt(no));
+		
+		request.setAttribute("vo", vo);
+		request.setAttribute("page", page);
+		
+		request.setAttribute("main_jsp", "../board/update.jsp");
+		return "../main/main.jsp";
+	}
+	
+	@RequestMapping("board/pwdcheck.do")
+	public void board_pwdcheck(HttpServletRequest request, HttpServletResponse response) {
+		String no = request.getParameter("no");
+		String pwd = request.getParameter("pwd");
+		String res = BoardDAO.boardPwdCheck(Integer.parseInt(no), pwd);
+		
+		try {
+			response.setContentType("text/plain;charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			out.write(res); // VO=> {}, List=> [] => JSON
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	@RequestMapping("board/update_ok.do")
+	public void board_update_ok(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			// %EC%9E%90%EB%B0%94&
+			// 자바
+			request.setCharacterEncoding("UTF-8");
+		} catch(Exception ex) {}
+		
+		String name = request.getParameter("name");
+		String subject = request.getParameter("subject");
+		String content = request.getParameter("content");
+		String pwd = request.getParameter("pwd");
+		String no = request.getParameter("no");
+		
+		BoardVO vo = new BoardVO();
+		vo.setName(name);
+		vo.setSubject(subject);
+		vo.setContent(content);
+		vo.setPwd(pwd);
+		vo.setNo(Integer.parseInt(no));
+		
+		String res = BoardDAO.boardUpdate(vo);
+		
+		try {
+			response.setContentType("text/plain;charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			out.write(res); // VO=> {}, List=> [] => JSON
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 }

@@ -37,13 +37,30 @@ $(function() {
 		}
 		
 		let no = $('#delBtn').attr("data-no")
+		let page = $('#delBtn').attr("data-page")
 		// 서버와 연결 => axios / fetch / getJSON
+		/*
+			axios.get('url',{
+				params : {}
+			})
+			.then(result=> {
+				결과값
+			})
+			axios.post
+		 */
 		$.ajax({
 			type:'post',
 			url:'../board/delete.do',
 			data:{"no":no,"pwd":pwd},
 			success:function(result) {
 				// yes / no
+				if(result==="yes") {
+					location.href="../board/list.do?page="+page
+				} else {
+					alert("비밀번호가 틀렸습니다")
+					$('#delpwd').val("")
+					$('#delpwd').focus()
+				}
 			},
 			error:function(error) {
 				console.log(error)
@@ -109,15 +126,15 @@ $(function() {
                 </tr>
                 <tr>
                   <td colspan="4" class="text-right">
-                    <a href="#" class="btn btn-mint btn-xs">수정</a>
+                    <a href="../board/update.do?no=${vo.no}&page=${page}" class="btn btn-mint btn-xs">수정</a>
                     <span class="btn btn-pink btn-xs" id="delSpan">삭제</span>
                     <a href="../board/list.do?page=${page}" class="btn btn-mint btn-xs">목록</a>
                   </td>
                 </tr>
                 <tr id="delTr" style="display: none;">
                   <td colspan="4" class="text-right">
-                    비밀번호: <input type="text" name="pwd" style="width: 100px;" class="input-sm" id="delpwd">
-                    <input type="button" class="btn-mint btn-sm" id="delBtn" value="삭제" data-no="${vo.no}">
+                    비밀번호: <input type="password" name="pwd" style="width: 100px;" class="input-sm" id="delpwd">
+                    <input type="button" class="btn-mint btn-sm" id="delBtn" value="삭제" data-no="${vo.no}" data-page="${page}">
                   </td>
                 </tr>
               </table>
