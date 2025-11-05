@@ -13,6 +13,45 @@
 	width: 800px;
 }
 </style>
+<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
+<script type="text/javascript">
+let bCheck = true
+$(function() {
+	$('#delSpan').text("삭제")
+	$('#delSpan').click(function() {
+		if(bCheck===true) {
+			$('#delTr').show("slow")
+			$('#delSpan').text("취소")
+			bCheck = false
+		} else {
+			$('#delTr').hide("slow")
+			$('#delSpan').text("삭제")
+			bCheck = true
+		}
+	})
+	$('#delBtn').on('click', function() {
+		let pwd = $('#delpwd').val()
+		if(pwd.trim()==="") {
+			$('#delpwd').focus()
+			return
+		}
+		
+		let no = $('#delBtn').attr("data-no")
+		// 서버와 연결 => axios / fetch / getJSON
+		$.ajax({
+			type:'post',
+			url:'../board/delete.do',
+			data:{"no":no,"pwd":pwd},
+			success:function(result) {
+				// yes / no
+			},
+			error:function(error) {
+				console.log(error)
+			}
+		})
+	})
+})
+</script>
 </head>
 <body>
 <!-- ****** Breadcumb Area Start ****** -->
@@ -49,30 +88,36 @@
               <table class="table">
                 <tr>
                   <th width="20%" class="text-center">번호</th>
-                  <td width="30%" class="text-center"></td>
+                  <td width="30%" class="text-center">${vo.no}</td>
                   <th width="20%" class="text-center">작성일</th>
-                  <td width="30%" class="text-center"></td>
+                  <td width="30%" class="text-center">${vo.dbday}</td>
                 </tr>
                 <tr>
                   <th width="20%" class="text-center">이름</th>
-                  <td width="30%" class="text-center"></td>
+                  <td width="30%" class="text-center">${vo.name}</td>
                   <th width="20%" class="text-center">조회수</th>
-                  <td width="30%" class="text-center"></td>
+                  <td width="30%" class="text-center">${vo.hit}</td>
                 </tr>
                 <tr>
                   <th width="20%" class="text-center">제목</th>
-                  <td colspan="3"></td>
+                  <td colspan="3">${vo.subject}</td>
                 </tr>
                 <tr>
                   <td colspan="4" valign="top" height="200">
-                    <pre style="white-space: pre-wrap; border: none; background-color: white;"></pre>
+                    <pre style="white-space: pre-wrap; border: none; background-color: white;">${vo.content}</pre>
                   </td>
                 </tr>
                 <tr>
                   <td colspan="4" class="text-right">
                     <a href="#" class="btn btn-mint btn-xs">수정</a>
-                    <a href="#" class="btn btn-pink btn-xs">삭제</a>
-                    <a href="#" class="btn btn-mint btn-xs">목록</a>
+                    <span class="btn btn-pink btn-xs" id="delSpan">삭제</span>
+                    <a href="../board/list.do?page=${page}" class="btn btn-mint btn-xs">목록</a>
+                  </td>
+                </tr>
+                <tr id="delTr" style="display: none;">
+                  <td colspan="4" class="text-right">
+                    비밀번호: <input type="text" name="pwd" style="width: 100px;" class="input-sm" id="delpwd">
+                    <input type="button" class="btn-mint btn-sm" id="delBtn" value="삭제" data-no="${vo.no}">
                   </td>
                 </tr>
               </table>
