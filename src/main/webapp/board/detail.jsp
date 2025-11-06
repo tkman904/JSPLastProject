@@ -142,6 +142,42 @@ $(function() {
 			</div>
 			<div class="row board_row" style="margin-top: 10px;">
 			  <h3>댓글</h3>
+			  <c:if test="${rCount==0}">
+			    <table class="table">
+			      <tr>
+			        <td class="text-center">등록된 댓글이 없습니다</td>
+			      </tr>
+			    </table>
+			  </c:if>
+			  <c:if test="${rCount>0}">
+			    <table class="table">
+			      <tr>
+			        <td>
+			          <c:forEach var="rvo" items="${rList}">
+			            <table class="table">
+			              <tr>
+			                <td class="text-left">⭐${rvo.name}(${rvo.dbday})</td>
+			                <td class="text-right">
+			                  <c:if test="${sessionScope.id!=null}">
+			                    <c:if test="${sessionScope.id==rvo.id}">
+			                      <a href="#" class="btn btn-xs btn-info">수정</a>
+			                      <a href="#" class="btn btn-xs btn-warning">삭제</a>
+			                    </c:if>
+			                    <a href="#" class="btn btn-xs btn-success">답글</a>
+			                  </c:if>
+			                </td>
+			              </tr>
+			              <tr>
+			                <td colspan="2" class="text-left" valign="top">
+			                  <pre style="white-space: pre-wrap; background-color: white; border: none;">${rvo.msg}</pre>
+			                </td>
+			              </tr>
+			            </table>
+			          </c:forEach>
+			        </td>
+			      </tr>
+			    </table>
+			  </c:if>
 			  <c:if test="${sessionScope.id!=null}">
 			    <table class="table">
 			      <tr>
