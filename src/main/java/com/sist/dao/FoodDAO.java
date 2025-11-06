@@ -91,4 +91,13 @@ public class FoodDAO {
 	   session.close();
 	   return vo;
    }
+   
+   // mapper.xml => 실행(X) => sql문장만 저장
+   // 분산 => Front Back DBA
+   public static FoodVO foodCookieData(int fno) {
+	   SqlSession session = ssf.openSession();
+	   FoodVO vo = session.selectOne("foodDetailData", fno);
+	   session.close();
+	   return vo;
+   }
 }

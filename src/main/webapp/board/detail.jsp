@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -138,6 +139,19 @@ $(function() {
                   </td>
                 </tr>
               </table>
+			</div>
+			<div class="row board_row" style="margin-top: 10px;">
+			  <h3>댓글</h3>
+			  <c:if test="${sessionScope.id!=null}">
+			    <table class="table">
+			      <tr>
+			        <td>
+			          <textarea rows="5" cols="95" name="msg" style="float: left;"></textarea>
+			          <button style="width: 100px; height: 101px; background-color: blue; color: white; float: left;">댓글쓰기</button>
+			        </td>
+			      </tr>
+			    </table>
+			  </c:if>
 			</div>
 		</div>
 	</section>

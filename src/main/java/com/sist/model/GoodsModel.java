@@ -5,8 +5,10 @@ import com.sist.controller.RequestMapping;
 import com.sist.dao.*;
 import com.sist.vo.*;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.util.*;
 
@@ -63,6 +65,32 @@ public class GoodsModel {
 	   request.setAttribute("cno", cno);
 	   request.setAttribute("title", titles[Integer.parseInt(cno)]);
 	   
+	   HttpSession session = request.getSession();
+	   String id = (String)session.getAttribute("id");
+	   List<GoodsVO> cList = new ArrayList<GoodsVO>();
+	   
+	   if(id!=null) { // 로그인된 상태
+		   Cookie[] cookies = request.getCookies();
+		   if(cookies!=null) {
+			   for(int i = cookies.length-1;i>=0;i--) {
+				   if(cookies[i].getName().startsWith("goods_"+id)) {
+					   String etc = cookies[i].getValue();
+					   
+					   // 테이블명 / no
+					   StringTokenizer st = new StringTokenizer(etc, "-");
+					   String no = st.nextToken();
+					   String c = st.nextToken();
+					   Map map1 = new HashMap();
+					   map1.put("no", no);
+					   map1.put("goods", table_name[Integer.parseInt(c)]);
+					   GoodsVO gvo = GoodsDAO.goodsCookieData(map1);
+					   cList.add(gvo);
+				   }
+			   }
+		   }
+		   request.setAttribute("cList", cList);
+	   }
+	   
 	   request.setAttribute("main_jsp", "../goods/list.jsp");
 	   return "../main/main.jsp";
     }
@@ -72,7 +100,25 @@ public class GoodsModel {
     	String no = request.getParameter("no");
     	String page = request.getParameter("page");
     	String cno = request.getParameter("cno");
-
+    	
+    	HttpSession session = request.getSession();
+ 	    String id = (String)session.getAttribute("id");
+ 	    if(id!=null) {
+ 		   Cookie[] cookies = request.getCookies();
+ 		   if(cookies!=null) {
+ 			   for(int i=0;i<cookies.length;i++) {
+ 				   if(cookies[i].getName().equals("goods_"+id+"_"+no+"_"+cno)) {
+ 					   cookies[i].setMaxAge(0);
+ 					   response.addCookie(cookies[i]);
+ 					   break;
+ 				   }
+ 			   }
+ 		   }
+ 		   Cookie cookie = new Cookie("goods_"+id+"_"+no+"_"+cno, no+"-"+cno);
+ 		   cookie.setMaxAge(60*60*24);
+ 		   response.addCookie(cookie);
+ 	    }
+ 	   
     	return "redirect:../goods/detail.do?no="+no+"&page="+page+"&cno="+cno;
     }
     
