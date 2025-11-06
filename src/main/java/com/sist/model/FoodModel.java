@@ -104,6 +104,11 @@ public class FoodModel {
    public String food_detail_before(HttpServletRequest request, HttpServletResponse response) {
 	   String fno = request.getParameter("fno");
 	   String page = request.getParameter("page");
+	   
+	   // cookie
+	   // 1. 로그인된 상태
+	   // 2. 쿠키 저장
+	   
 	   return "redirect:../food/detail.do?fno="+fno+"&page="+page;
    }
 }
