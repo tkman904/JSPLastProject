@@ -106,7 +106,6 @@ public class BoardModel {
 		
 		request.setAttribute("rList", rList);
 		request.setAttribute("rCount", rCount);
-		
 		request.setAttribute("vo", vo);
 		request.setAttribute("page", page);
 		
