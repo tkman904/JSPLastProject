@@ -14,9 +14,56 @@
      -->
     <result property="dvo.loc" column="loc"/>
   </resultMap>
+  
   <select id="empAllData" resultMap="empMap">
     SELECT empno, ename, job, TO_CHAR(hiredate, 'YYYY-MM-DD') AS dbday, dname, loc
    	FROM emp, dept
    	WHERE emp.deptno=dept.deptno
   </select>
+  
+  <select id="empAllNames" resultType="string">
+    SELECT ename FROM emp
+  </select>
+  
+  <!-- 동적 쿼리 trim/foreach/if/choose/when/bind/where/set -->
+  <select id="empFindData" resultMap="empMap" parameterType="hashmap">
+    SELECT empno, ename, job, TO_CHAR(hiredate, 'YYYY-MM-DD') AS dbday, dname, loc
+   	FROM emp, dept
+   	WHERE emp.deptno=dept.deptno
+   	AND ename IN
+	<!-- <trim prefix="AND ename IN(" suffix=")" suffixOverrides=")"> -->
+	<foreach collection="nameArr" item="ename" close=")" separator="," open="(">
+	#{ename}
+	</foreach>
+	<!-- </trim> -->
+  </select>
+  <!-- 
+  		prefix = 앞에 추가
+  		suffix = 뒤에 추가
+  		suffixOverrides : 뒤에 있는 문자 제거
+  		prefixOverrides : 앞에 있는 문자 제거
+  		
+  		WHERE
+  		<trim prefixOverrides="OR">
+  		<if test="column=='name'">
+  		  OR name LIKE ~
+  		</if>
+  		<if test="column=='address'">
+  		  OR address LIKE ~
+  		</if>
+  		<if test="column=='type'">
+  		  OR type LIKE ~
+  		</if>
+  		
+  		for(String ename : list)
+  		    ============   ===== collection
+  		    item
+  		    
+  		nameArr = {"A","B","C","D"};
+  		
+  		for(String s : nameArr) {
+  			s = "A"
+  			
+  		ename IN("A","B","C","D")
+   -->
 </mapper>
