@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sist.mapper.emp-mapper">
+  <resultMap type="com.sist.vo.EmpVO" id="empMap">
+    <result property="dvo.dname" column="dname"/>
+    <!-- 
+    		SELECT ename, dname, loc
+    		FROM emp
+    		WHERE emp.deptno = dept.deptno
+    		
+    		setEname()
+    		dvo.setDname()
+    		dvo.setLoc()
+     -->
+    <result property="dvo.loc" column="loc"/>
+  </resultMap>
+  <select id="empAllData" resultMap="empMap">
+    SELECT empno, ename, job, TO_CHAR(hiredate, 'YYYY-MM-DD') AS dbday, dname, loc
+   	FROM emp, dept
+   	WHERE emp.deptno=dept.deptno
+  </select>
+</mapper>
