@@ -36,17 +36,28 @@
     </div>
     <!-- ****** Breadcumb Area End ****** -->
 
-    <!-- ****** Archive Area Start ****** -->
+    <!-- ****** Archive Area Start ******
+    	 1. 화면 이동
+    	    데이터 전송 = 오라클 컬럼명 => page
+    	    ========= primary key
+    	    예약
+    	      1. 맛집 번호
+    	      2. 월 일
+    	      3. 시간
+    	      4. 인원
+    -->
     <section class="archive-area section_padding_80">
         <div class="container">
 			<div class="row">
                 <!-- Single Post -->
-                <c:forEach var="vo" items="${list }">
+                <c:forEach var="vo" items="${list}">
                 <div class="col-12 col-md-6 col-lg-4">
                     <div class="single-post wow fadeInUp" data-wow-delay="0.1s">
                         <!-- Post Thumb -->
                         <div class="post-thumb">
-                            <img src="${vo.poster }" alt="">
+                          <a href="../recipe/detail.do?no=${vo.no}">
+                            <img src="${vo.poster}" alt="">
+                          </a>
                         </div>
                         <!-- Post Content -->
                         <div class="post-content">
@@ -54,22 +65,22 @@
                                 <div class="post-author-date-area d-flex">
                                     <!-- Post Author -->
                                     <div class="post-author">
-                                        <a href="#">${vo.chef }</a>
+                                        <a href="#">${vo.chef}</a>
                                     </div>
                                     <!-- Post Date -->
                                     <div class="post-date">
-                                        <a href="#">조회수: ${vo.hit }</a>
+                                        <a href="#">조회수: ${vo.hit}</a>
                                     </div>
                                 </div>
                                 <!-- Post Comment & Share Area -->
                                 <div class="post-comment-share-area d-flex">
                                     <!-- Post Favourite -->
                                     <div class="post-favourite">
-                                        <a href="#"><i class="fa fa-heart-o" aria-hidden="true"></i> ${vo.likecount }</a>
+                                        <a href="#"><i class="fa fa-heart-o" aria-hidden="true"></i> ${vo.likecount}</a>
                                     </div>
                                     <!-- Post Comments -->
                                     <div class="post-comments">
-                                        <a href="#"><i class="fa fa-comment-o" aria-hidden="true"></i> ${vo.replycount }</a>
+                                        <a href="#"><i class="fa fa-comment-o" aria-hidden="true"></i> ${vo.replycount}</a>
                                     </div>
                                     <!-- Post Share -->
                                     <div class="post-share">
@@ -77,8 +88,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="#">
-                                <h4 class="post-headline">${vo.title }</h4>
+                            <a href="../recipe/detail.do?no=${vo.no}">
+                              <%-- 데이터베이스 #{no} --%>
+                                <h4 class="post-headline">${vo.title}</h4>
                             </a>
                         </div>
                     </div>
@@ -89,25 +101,25 @@
                     <div class="pagination-area d-sm-flex mt-15">
                         <nav aria-label="#">
                             <ul class="pagination">
-                               <c:if test="${startPage>1 }">
+                               <c:if test="${startPage>1}">
                                 <li class="page-item">
-                                    <a class="page-link" href="../recipe/list.do?page=${startPage-1 }">이전 <i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
+                                    <a class="page-link" href="../recipe/list.do?page=${startPage-1}">이전 <i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
                                 </li>
                                </c:if>
                                
-                                <c:forEach var="i" begin="${startPage }" end="${endPage }">
-                                  <li class="page-item ${i==curpage?'active':'' }"><a class="page-link" href="../recipe/list.do?page=${i }">${i}</a></li>
+                                <c:forEach var="i" begin="${startPage}" end="${endPage}">
+                                  <li class="page-item ${i==curpage?'active':''}"><a class="page-link" href="../recipe/list.do?page=${i}">${i}</a></li>
                                 </c:forEach>   
                                       
-                               <c:if test="${endPage<totalpage }">                  
+                               <c:if test="${endPage<totalpage}">                  
                                 <li class="page-item">
-                                    <a class="page-link" href="../recipe/list.do?page=${endPage+1 }">다음 <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
+                                    <a class="page-link" href="../recipe/list.do?page=${endPage+1}">다음 <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
                                 </li>
                                </c:if>
                             </ul>
                         </nav>
                         <div class="page-status">
-                            <p>Page ${curpage } of ${totalpage } results</p>
+                            <p>Page ${curpage} of ${totalpage} results</p>
                         </div>
                     </div>
                 </div>

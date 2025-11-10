@@ -198,12 +198,12 @@ $(function() {
                                 </c:if>
                                 <c:if test="${sessionScope.id!=null && sessionScope.admin=='n'}">
 	                                <li class="nav-item">
-	                                    <a class="nav-link" href="archive.html">마이페이지</a>
+	                                    <a class="nav-link" href="../mypage/mypage_main.do">마이페이지</a>
 	                                </li>
                                 </c:if>
                                 <c:if test="${sessionScope.id!=null && sessionScope.admin=='y'}">
 	                                <li class="nav-item">
-	                                    <a class="nav-link" href="archive.html">관리자페이지</a>
+	                                    <a class="nav-link" href="../admin/admin_main.do">관리자페이지</a>
 	                                </li>
                                 </c:if>
                             </ul>
