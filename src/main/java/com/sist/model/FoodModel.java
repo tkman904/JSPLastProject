@@ -1,5 +1,10 @@
 package com.sist.model;
+
+import java.io.PrintWriter;
 import java.util.*;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import com.sist.controller.Controller;
 import com.sist.controller.RequestMapping;
@@ -105,9 +110,11 @@ public class FoodModel {
    public String food_detail(HttpServletRequest request, HttpServletResponse response) {
 	   String fno = request.getParameter("fno");
 	   String page = request.getParameter("page");
+	   String link = request.getParameter("link");
 	   FoodVO vo = FoodDAO.foodDetailData(Integer.parseInt(fno));
 	   request.setAttribute("vo", vo);
 	   request.setAttribute("page", page);
+	   request.setAttribute("link", link);
 	   // String food_detail(int fno)
 	   // String food_detail(FoodVO vo)
 	   // => 스프링 : 전송 객체 / 사용자 요청값 Model
@@ -145,5 +152,111 @@ public class FoodModel {
 	   // 2. 쿠키 저장
 	   
 	   return "redirect:../food/detail.do?fno="+fno+"&page="+page;
+   }
+   
+   @RequestMapping("food/find.do")
+   public String food_find(HttpServletRequest request, HttpServletResponse response) {
+	   // 검색어 / 컬럼명 / type 여러개 / 페이지
+//	   String page = request.getParameter("page");
+//	   if(page==null) {
+//		   page = "1";
+//	   }
+//	   int curpage = Integer.parseInt(page);
+//	   String[] types = request.getParameterValues("type");
+//	   String column = request.getParameter("column");
+//	   String fd = request.getParameter("fd");
+//	   
+//	   Map map = new HashMap();
+//	   int rowSize = 12;
+//	   int start = (rowSize*curpage)-(rowSize-1);
+//	   int end = rowSize*curpage;
+//	   map.put("start", start);
+//	   map.put("end", end);
+//	   map.put("fdArr", types);
+//	   map.put("ss", fd);
+//	   map.put("column", column);
+//	   
+//	   List<FoodVO> list = FoodDAO.foodFindData(map);
+//	   int count = FoodDAO.foodFindCount(map);
+//	   
+//	   request.setAttribute("count", count);
+	   
+	   request.setAttribute("main_jsp", "../food/find.jsp");
+	   return "../main/main.jsp";
+   }
+   
+   @RequestMapping("food/find_ajax.do")
+   public void food_find_ajax(HttpServletRequest request, HttpServletResponse response) {
+	   String page = request.getParameter("page");
+	   if(page==null) {
+		   page = "1";
+	   }
+	   int curpage = Integer.parseInt(page);
+	   String[] types = request.getParameterValues("type");
+	   String column = request.getParameter("column");
+	   String fd = request.getParameter("fd");
+	   
+	   Map map = new HashMap();
+	   int rowSize = 12; 
+	   int start = (rowSize*curpage)-(rowSize-1);
+	   int end = rowSize*curpage;
+	   map.put("start", start);
+	   map.put("end", end);
+	   map.put("fdArr", types);
+	   map.put("ss", fd);
+	   map.put("column", column);
+	   
+	   List<FoodVO> list = FoodDAO.foodFindData(map);
+	   for(FoodVO vo : list) {
+		   String s = vo.getAddress();
+		   s = s.substring(0, s.indexOf(" "));
+		   vo.setAddress(s.trim());
+	   }
+	   int count = FoodDAO.foodFindCount(map);
+	   final int BLOCK = 10;
+	   int startPage = ((curpage-1)/BLOCK*BLOCK)+1;
+	   int endPage = ((curpage-1)/BLOCK*BLOCK)+BLOCK;
+	   int totalpage = (int)(Math.ceil(count/12.0));
+	   if(endPage>totalpage) {
+		   endPage = totalpage;
+	   }		   
+	   /*
+	    *   1 2 3 4 5 6 7 8 9 10 => curpage
+	    *   |                  |
+	    *  startPage          endPage
+	    */
+	   int i = 0;
+	   JSONArray arr = new JSONArray();
+	   // list = [] JSONArray
+	   // vo = {} JSONObject
+	   // fno,name,type,address,poster,likecount,replycount
+	   for(FoodVO vo : list) {
+		   JSONObject obj = new JSONObject();
+		   obj.put("fno", vo.getFno());
+		   obj.put("name", vo.getName());
+		   obj.put("type", vo.getType());
+		   obj.put("address", vo.getAddress());
+		   obj.put("poster", vo.getPoster());
+		   obj.put("likecount", vo.getLikecount());
+		   obj.put("replycount", vo.getReplycount());
+		   if(i==0) {
+			   obj.put("curpage", curpage);
+			   obj.put("totalpage", totalpage);
+			   obj.put("startPage", startPage);
+			   obj.put("endPage", endPage);
+			   obj.put("count", count);
+		   }
+		   arr.add(obj);
+		   i++;
+	   }
+	   System.out.println(arr.toJSONString());
+	   
+	   try {
+		   response.setContentType("text/plain;charset=UTF-8");
+		   PrintWriter out = response.getWriter();
+		   out.write(arr.toJSONString());
+	   } catch(Exception ex) {
+		   ex.printStackTrace();
+	   }
    }
 }

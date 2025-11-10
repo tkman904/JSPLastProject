@@ -100,4 +100,60 @@ public class FoodDAO {
 	   session.close();
 	   return vo;
    }
+   
+   /*
+      <select id="foodFindData" resultType="FoodVO" parameterType="hashmap">    
+	  <select id="foodFindCount" resultType="int" parameterType="hashmap">
+	    SELECT COUNT(*)
+	    FROM menupan_food
+	    WHERE ${column} LIKE '%'||#{ss}||'%'
+	    AND 
+	    <trim prefix="(" suffix=")" prefixOverrides="OR|AND">
+	      <foreach collection="fdArr" item="fd">
+	        <trim prefix="OR">
+	          <choose>
+	            <when test="fd=='A'.toString()">
+	              type LIKE '%한식%'
+	            </when>
+	            <when test="fd=='B'.toString()">
+	              type LIKE '%일식%'
+	            </when>
+	            <when test="fd=='C'.toString()">
+	              type LIKE '%중식%'
+	            </when>
+	            <when test="fd=='D'.toString()">
+	              type LIKE '%양식%'
+	            </when>
+	            <when test="fd=='E'.toString()">
+	              type LIKE '%분식%'
+	            </when>
+	          </choose>
+	        </trim>
+	      </foreach>
+	    </trim>
+	  </select>
+    */
+   public static List<FoodVO> foodFindData(Map map) {
+	   List<FoodVO> list = null;
+	   try {
+		   SqlSession session = ssf.openSession();
+		   list = session.selectList("foodFindData", map);
+		   session.close();
+	   } catch(Exception ex) {
+		   ex.printStackTrace();
+	   }
+	   return list;
+   }
+   
+   public static int foodFindCount(Map map) {
+	   int count = 0;
+	   try {
+		   SqlSession session = ssf.openSession();
+		   count = session.selectOne("foodFindCount", map);
+		   session.close();
+	   } catch(Exception ex) {
+		   ex.printStackTrace();
+	   }
+	   return count;
+   }
 }
