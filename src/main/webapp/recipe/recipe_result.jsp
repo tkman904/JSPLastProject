@@ -62,17 +62,17 @@
                 <ul class="pagination">
                    <c:if test="${startPage>1}">
                     <li class="page-item">
-                        <a class="page-link" href="../recipe/list.do?page=${startPage-1}">이전 <i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
+                        <a class="page-link" onclick="prev(${startPage-1})">이전 <i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
                     </li>
                    </c:if>
                    
                     <c:forEach var="i" begin="${startPage}" end="${endPage}">
-                      <li class="page-item ${i==curpage?'active':''}"><a class="page-link" href="../recipe/list.do?page=${i}">${i}</a></li>
+                      <li class="page-item ${i==curpage?'active':''}"><a class="page-link" onclick="change(${i})">${i}</a></li>
                     </c:forEach>   
                           
                    <c:if test="${endPage<totalpage}">                  
                     <li class="page-item">
-                        <a class="page-link" href="../recipe/list.do?page=${endPage+1}">다음 <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
+                        <a class="page-link" onclick="next(${endPage+1})">다음 <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
                     </li>
                    </c:if>
                 </ul>

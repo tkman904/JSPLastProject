@@ -10,20 +10,36 @@
 <script type="text/javascript">
 $(function() {
 	$('#findBtn').click(function() {
-		let column = $('#column').val()
-		let fd = $('#fd').val()
-		
-		$.ajax({
-			type:'post',
-			url:'../recipe/recipe_result.do',
-			data:{"fd":fd, "column":column},
-			// responseText => HTML을 문자열로 읽기 responseXML => Object
-			success:function(result) {
-				$('.find_print').html(result)
-			}
-		})
+		commons(1)
 	})
+	
 })
+
+function commons(page) {
+	let column=$('#column').val()
+	let fd=$('#fd').val()
+	$.ajax({
+		type:'post',
+		url:'../recipe/recipe_result.do',
+		data:{"fd":fd,"column":column,"page":page},
+		// responseText => HTML을 문자열로 읽기 responseXML => Object
+		success:function(result) {
+			$('.find_print').html(result)
+		}
+	})
+}
+
+function change(page) {
+	commons(page)
+}
+
+function prev(page) {
+	commons(page)
+}
+
+function next(page) {
+	commons(page)
+}
 </script>
 </head>
 <body>
