@@ -47,7 +47,41 @@ $(function() {
 			}
 		})
 	})
+	$('#fd').keydown(function(e) {
+		if(e.keyCode==13) {
+			commons(1)	
+		}
+	})
 })
+// 1. 처음
+// 2. <
+// 3. >
+// 4. page 번호
+function commons(page) {
+	let types = []
+	$('input[name=type]:checked').each(function() {
+		types.push($(this).val())
+	})
+	let fd = $('#fd').val()
+	let column = $('#column').val()
+	console.log(types)
+	console.log("검색어: "+fd)
+	console.log("컬럼명: "+column)
+	// 배열 => traditional
+	$.ajax({
+		type:'post',
+		url:'../food/find_ajax.do',
+		data:{"fd":fd,"column":column,"type":types,"page":page},
+		traditional:true,
+		success:function(result) {
+			let json = JSON.parse(result)
+			console.log(json)
+			$('#count').text(json[0].count+'건')
+			jsonView(json)
+		}
+	})	
+}
+
 function jsonView(json) {
 	let html=''
 	json.map((food)=> {
@@ -80,14 +114,57 @@ function jsonView(json) {
 	          +'</div>'
 	          +'</div>'
 	          +'</div>'
-	          +'<a class="a-link">'
+	          +'<a class="a-link" href="../food/detail.do?page='+json[0].curpage+'&fno='+food.fno+'&link=1">'
 	          +'<h4 class="post-headline">'+food.name+'</h4>'
 	          +'</a>'
 	          +'</div>'
 	          +'</div>'
 	          +'</div>'
 	})
+	
+	// page
+	html +='<div class="col-12">'
+	html +='<div class="pagination-area d-sm-flex mt-15">'
+	html +='<nav aria-label="#">'
+	html +='<ul class="pagination">'
+	if(json[0].startPage>1) {
+		html+='<li class="page-item">'
+        html+='<a class="page-link" onclick="prev('+(json[0].startPage-1)+')">이전<i class="fa fa-angle-double-left" aria-hidden="true"></i></a>'
+        html+='</li>'
+	}                  
+	for(let i=json[0].startPage;i<=json[0].endPage;i++) {
+    	if(json[0].curpage===i) {
+    		html+='<li class="page-item active"><a class="page-link" onclick="change('+i+')">'+i+'</a></li>'
+    	} else {
+    		html+='<li class="page-item"><a class="page-link" onclick="change('+i+')">'+i+'</a></li>'
+    	}
+    }
+	if(json[0].endPage<json[0].totalpage) {
+		html+='<li class="page-item">'
+        html+='<a class="page-link" onclick="next('+(json[0].endPage+1)+')">다음 <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>'
+        html+='</li>'
+	}
+	html+='</ul>'
+	html+='</nav>'
+	html+='<div class="page-status">'
+	html+='<p>Page '+json[0].curpage+' of '+json[0].totalpage+' results</p>'
+    html+='</div>'
+    html+='</div>'
+    html+='</div>'
+    
 	$('.find_print').html(html)
+}
+
+function change(page) {
+	commons(page)
+}
+
+function prev(page) {
+	commons(page)
+}
+
+function next(page) {
+	commons(page)
 }
 </script>
 </head>
