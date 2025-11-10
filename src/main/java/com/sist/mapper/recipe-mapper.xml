@@ -53,4 +53,27 @@
     SELECT * FROM recipedetail
     WHERE no=#{no}
   </select>
+  
+  <select id="recipeFindData" resultType="com.sist.vo.RecipeVO" parameterType="hashmap">
+    SELECT no, title, chef, poster, hit, likecount, replycount, num
+    FROM (SELECT no, title, chef, poster, hit, likecount, replycount, rownum as num
+    FROM (SELECT no, title, chef, poster, hit, likecount, replycount
+    FROM recipe WHERE no IN(
+    	SELECT no FROM recipe
+    	INTERSECT
+    	SELECT no FROM recipeDetail
+    )
+    AND ${column} LIKE '%'||#{fd}||'%'
+    ORDER BY no ASC))
+    WHERE num BETWEEN #{start} AND #{end}
+  </select>
+  <select id="recipleFindTotalPage" resultType="int">
+    SELECT CEIL(COUNT(*)/12.0)
+    FROM recipe WHERE no IN(
+    	SELECT no FROM recipe
+    	INTERSECT
+    	SELECT no FROM recipeDetail
+    )
+    AND ${column} LIKE '%'||#{fd}||'%'
+  </select>
 </mapper>

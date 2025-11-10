@@ -159,7 +159,7 @@ $(function() {
                                           <a class="dropdown-item" href="single.html">레시피 등록</a>
                                         </c:if>
                                         <%-- 네이버 카페 / 블로그 : 형태소 분석 --%>
-                                        <a class="dropdown-item" href="single.html">레시피 검색</a>
+                                        <a class="dropdown-item" href="../recipe/find.do">레시피 검색</a>
                                     </div>
                                 </li>
                                 <li class="nav-item dropdown">
