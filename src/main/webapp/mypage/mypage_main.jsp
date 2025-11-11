@@ -172,7 +172,7 @@
       <p>환영합니다 👋</p>
     </div>
     <ul class="menu">
-      <li><a href="mypage.jsp" class="active">회원 정보</a></li>
+      <li><a href="../mypage/mypage_main.do" class="active">회원 정보</a></li>
       <li><a href="../jjim/jjim_list.do">찜 내역</a></li>
       <li><a href="#">예약 내역</a></li>
       <li><a href="#">결제 내역</a></li>

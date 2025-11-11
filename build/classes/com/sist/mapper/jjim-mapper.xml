@@ -23,12 +23,18 @@
     <!-- fvo.setName(rs.getString("name")) -->
     <result property="fvo.poster" column="poster"/>
     <result property="fvo.fno" column="fno"/>
+    <result property="fvo.address" column="address"/>
   </resultMap>
   
   <select id="jjimFoodListData" resultMap="jjimMap" parameterType="string">
-    SELECT jno, aj.type, rno, name, poster
+    SELECT jno, aj.type, rno, name, poster, address, fno
     FROM all_jjim aj, menupan_food mf
     WHERE aj.rno=mf.fno AND id=#{id} AND aj.type=1
     ORDER BY jno DESC
   </select>
+  
+  <delete id="jjimCancel" parameterType="int">
+    DELETE FROM all_jjim
+    WHERE jno=#{jno}
+  </delete>
 </mapper>
