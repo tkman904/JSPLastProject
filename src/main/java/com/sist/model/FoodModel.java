@@ -112,6 +112,7 @@ public class FoodModel {
 	   String page = request.getParameter("page");
 	   String link = request.getParameter("link");
 	   FoodVO vo = FoodDAO.foodDetailData(Integer.parseInt(fno));
+	   request.setAttribute("jCount", 0);
 	   request.setAttribute("vo", vo);
 	   request.setAttribute("page", page);
 	   request.setAttribute("link", link);

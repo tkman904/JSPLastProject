@@ -38,6 +38,7 @@ $(function() {
 					likeCheck = false
 					$('#likeBtn').attr("src", "../img/images/likeoff.png")
 				}
+				//$('#likecount').text(result)
 			},
 			error:function(err) {
 				console.log(err)
@@ -72,6 +73,7 @@ $(function() {
 				}
 			})
 		}
+		//$('#likecount').text(result)
 	})
 })
 </script>
@@ -172,7 +174,13 @@ $(function() {
 	                 			<td class="text-right">
 		                   			<c:if test="${sessionScope.id!=null && sessionScope.admin=='n'}">
 	    	                   			<img src="../img/images/likeoff.png" style="width: 25px; height: 25px;" class="img-link" id="likeBtn">
-	        		             		<a href="#" class="btn btn-xs btn-success">찜하기</a>
+	        		             		<c:if test="${jCount==0}">
+	        		             			<a href="../jjim/jjim_insert.do?rno=${vo.fno}&type=1&page=${page}" class="btn btn-xs btn-success">찜하기</a>
+	        		             		</c:if>
+	        		             		<c:if test="${jCount!=0}">
+	        		             			<span class="btn btn-xs btn-outline-success">찜하기</span>
+	        		             		</c:if>
+	        		             		
 	                     				<a href="#" class="btn btn-xs btn-info">예약하기</a>
 	                   				</c:if>
 	                   				<c:if test="${link!=1}">

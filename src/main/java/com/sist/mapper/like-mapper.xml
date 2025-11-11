@@ -15,4 +15,27 @@
     DELETE FROM all_like
     WHERE rno=#{rno} AND id=#{id} AND type=#{type}
   </delete>
+  
+  <update id="likeCountIncrement" parameterType="hashmap">
+    UPDATE ${table} SET
+    likecount=likecount+1
+    WHERE ${checks}=#{rno}
+  </update>
+  
+  <update id="likeCountDecrement" parameterType="hashmap">
+    UPDATE ${table} SET
+    likecount=likecount-1
+    WHERE ${checks}=#{rno}
+  </update>
+  
+  <select id="likeCount" resultType="int" parameterType="hashmap">
+    SELECT NVL(likecount, 0) AS likecount
+    FROM ${table}
+    WHERE ${checks}=#{rno}
+  </select>
+  
+  <select id="likeCheck" resultType="int" parameterType="hashmap">
+    SELECT COUNT(*) FROM all_like
+    WHERE rno=#{rno} AND type=#{type} AND id=#{id}
+  </select>
 </mapper>

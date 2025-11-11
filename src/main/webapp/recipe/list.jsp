@@ -27,7 +27,7 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <%-- 검색기 --%>
-                            총 <span style="font-size: 35; color: green;">${count}</span>개의 맛있는 레시피가 있습니다.
+                            총 <span style="font-size: 35px; color: green;">${count}</span>개의 맛있는 레시피가 있습니다.
                         </ol>
                     </nav>
                 </div>

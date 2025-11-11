@@ -1,5 +1,6 @@
 package com.sist.model;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 import com.sist.controller.Controller;
@@ -75,13 +76,15 @@ public class RecipeModel {
 		// curpage => 1~10 : 1 , 11~20 : 11
 		int endPage=((curpage-1)/BLOCK*BLOCK)+BLOCK;
 		
-		int count = RecipeDAO.recipeCount();
-		
 		if(endPage>totalpage)
 			endPage=totalpage;
+		
+		int count = RecipeDAO.recipeCount();
+		DecimalFormat d = new DecimalFormat("##,###,###");
+		
 		// 브라우저 전송 
 		request.setAttribute("list", list);
-		request.setAttribute("count", count);
+		request.setAttribute("count", d.format(count));
 		request.setAttribute("curpage", curpage);
 		request.setAttribute("totalpage", totalpage);
 		request.setAttribute("startPage", startPage);
