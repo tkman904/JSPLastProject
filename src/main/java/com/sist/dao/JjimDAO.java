@@ -2,6 +2,7 @@ package com.sist.dao;
 
 import java.util.*;
 
+import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import com.sist.commons.*;
@@ -23,5 +24,73 @@ public class JjimDAO {
 	
 	static {
 		ssf = CreateSqlSessionFactory.getSsf();
+	}
+	
+	/*
+	      <select id="jjimCheckCount" resultType="int" parameterType="JjimVO">
+		    SELECT COUNT(*)
+		    FROM all_jjim
+		    WHERE id=#{id} AND rno=#{rno} AND type=#{type}
+		  </select>
+		  
+		  <insert id="jjimInsert" parameterType="JjimVO">
+		    INSERT INTO all_jjim
+		    VALUES(aj_jno_seq.nextval, #{type}, #{rno}, #{id}, SYSDATE)
+		  </insert>
+	 */
+	public static int jjimCheckCount(JjimVO vo) {
+		int count = 0;
+		try {
+			SqlSession session = ssf.openSession();
+			count = session.selectOne("jjimCheckCount", vo);
+			session.close();
+			/*
+			 * 	 {} => getter
+			 * 	 {name} => getName()
+			 *     | vo => 변수명
+			 *     
+			 *   {start} => map.get("start")
+			 *     | map => key
+			 *     
+			 *     => ?에 들어가는 값 => parameterType
+			 *     => SQL문장 실행 결과 => resultType
+			 */
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		return count;
+	}
+	
+	// 찜하기 => 추가
+	public static void jjimInsert(JjimVO vo) {
+		try {
+			SqlSession session = ssf.openSession(true);
+			session.insert("jjimInsert", vo);
+			//            => SQL문장 찾기 , ?에 값을 채운다
+			session.close();
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	// 마이페이지에 출력
+	/*
+	      <select id="jjimFoodListData" resultMap="jjimMap" parameterType="string">
+		    SELECT jno, aj.type, rno, name, poster
+		    FROM all_jjim aj, menupan_food mf
+		    WHERE aj.rno=mf.fno AND id=#{id} AND aj.type=1
+		    ORDER BY jno DESC
+		  </select>
+	 */
+	public static List<JjimVO> jjimFoodListData(String id) {
+		List<JjimVO> list = null;
+		try {
+			SqlSession session = ssf.openSession();
+			list = session.selectList("jjimFoodListData", id);
+			session.close();
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		return list;
 	}
 }

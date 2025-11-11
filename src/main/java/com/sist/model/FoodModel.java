@@ -112,7 +112,7 @@ public class FoodModel {
 	   String page = request.getParameter("page");
 	   String link = request.getParameter("link");
 	   FoodVO vo = FoodDAO.foodDetailData(Integer.parseInt(fno));
-	   request.setAttribute("jCount", 0);
+	   //request.setAttribute("jCount", 0);
 	   request.setAttribute("vo", vo);
 	   request.setAttribute("page", page);
 	   request.setAttribute("link", link);
@@ -120,6 +120,20 @@ public class FoodModel {
 	   // String food_detail(FoodVO vo)
 	   // => 스프링 : 전송 객체 / 사용자 요청값 Model
 	   // => request는 사용하지 않는다
+	   JjimVO jvo = new JjimVO();
+	   jvo.setRno(Integer.parseInt(fno));
+	   jvo.setType(1);
+	   
+	   HttpSession session = request.getSession();
+	   String id = (String)session.getAttribute("id");
+	   jvo.setId(id);
+	   
+	   // 로그인된 상태
+	   if(id!=null) {
+		   int jCount = JjimDAO.jjimCheckCount(jvo);
+		   request.setAttribute("jCount", jCount);
+	   }
+	   
 	   request.setAttribute("main_jsp", "../food/detail.jsp");
 	   return "../main/main.jsp";
    }

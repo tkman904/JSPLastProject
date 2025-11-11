@@ -1,5 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sist.mapper.jjim-mapper">
-
+  <!-- jjim 확인
+  	   rno : 맛집번호, 레시피번호, 상품번호
+  	   type :  1        2        3
+  	   jno : 고유번호 = 취소
+   -->
+  <select id="jjimCheckCount" resultType="int" parameterType="JjimVO">
+    SELECT COUNT(*)
+    FROM all_jjim
+    WHERE id=#{id} AND rno=#{rno} AND type=#{type}
+  </select>
+  
+  <insert id="jjimInsert" parameterType="JjimVO">
+    INSERT INTO all_jjim
+    VALUES(aj_jno_seq.nextval, #{type}, #{rno}, #{id}, SYSDATE)
+  </insert>
+  
+  <!-- 마이페이지 출력 = 취소 -->
+  <resultMap type="JjimVO" id="jjimMap">
+    <result property="fvo.name" column="name"/>
+    <!-- fvo.setName(rs.getString("name")) -->
+    <result property="fvo.poster" column="poster"/>
+    <result property="fvo.fno" column="fno"/>
+  </resultMap>
+  
+  <select id="jjimFoodListData" resultMap="jjimMap" parameterType="string">
+    SELECT jno, aj.type, rno, name, poster
+    FROM all_jjim aj, menupan_food mf
+    WHERE aj.rno=mf.fno AND id=#{id} AND aj.type=1
+    ORDER BY jno DESC
+  </select>
 </mapper>
