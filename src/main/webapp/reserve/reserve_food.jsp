@@ -27,6 +27,17 @@ $(function() {
 		$('#food_poster').show()
 		$('#reserve_info').show()
 		$('#food_name').text(name)
+		
+		$('#rfno').val(fno)
+		
+		// 화면 이동
+		$.ajax({
+			type:'post',
+			url:'../reserve/reserve_date.do',
+			success:function(result) {
+				$('#food_rdays').html(result)
+			}
+		})
 	})
 })
 </script>

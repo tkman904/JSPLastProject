@@ -6,21 +6,16 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style type="text/css">
-.dataTr:hover {
-	cursor: pointer;
-}
-</style>
 <script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
 <script type="text/javascript">
 $(function() {
-	$('.dataTr').click(function() {
-		let fno = $(this).attr("data-no");
+	$('.reserves').click(function() {
+		let no = $(this).attr("data-no");
 		//alert("fno:"+fno)
 		$.ajax({
 			type:'post',
-			url:'../jjim/food_detail.do',
-			data:{"fno":fno},
+			url:'../mypage/reserve_detail.do',
+			data:{"no":no},
 			success:function(result) {
 				let json = JSON.parse(result)
 				$('#img').attr("src", json.poster)
@@ -31,14 +26,15 @@ $(function() {
 				$('#time').text(json.time)
 				$('#score').text(json.score)
 				$('#parking').text(json.parking)
-				$('#content').text(json.content)
-				$('#theme').text(json.theme)
-				$('#price').text(json.price)
+				$('#rday').text(json.rday)
+				$('#inwon').text(json.inwon)
+				$('#dbday').text(json.dbday)
+				$('#no').text(json.no)
 				$('.print').show()
 				
 				setTimeout(()=> {
 					$('.print').hide("slow")
-				}, 5000);
+				}, 20000);
 			},
 			error:function(err) {
 				console.log(err)
@@ -49,39 +45,69 @@ $(function() {
 </script>
 </head>
 <body>
-  <main class="mypage-main">
-    <h2>찜 내역</h2>
+<main class="mypage-main">
+    <h2>예약 내역</h2>
     <div class="info-card">
       <table>
         <tr>
           <th width="10%">번호</th>
-          <th width="15%"></th>
+          <th width="10%"></th>
           <th width="20%">맛집명</th>
-          <th width="40%">주소</th>
-          <th width="15%"></th>
+          <th width="20%">예약일</th>
+          <th width="10%">시간</th>
+          <th width="10%">인원</th>
+          <th width="20%"></th>
         </tr>
-        <c:forEach var="vo" items="${list}">
+        <c:forEach var="vo" items="${rList }">
           <tr class="dataTr" data-no="${vo.fvo.fno}">
-            <td width="10%">${vo.jno}</td>
-            <td width="15%">
-              <img src="${vo.fvo.poster}" style="width: 35px; height: 35px;">
+            <td width="10%">${vo.no}</td>
+            <td width="10%">
+              <img src="${vo.fvo.poster}" style="width: 35px;height: 35px">
             </td>
             <td width="20%">${vo.fvo.name}</td>
-            <td width="40%">${vo.fvo.address}</td>
-            <td width="15%">
-              <a href="../jjim/jjim_cancel.do?jno=${vo.jno}" class="btn btn-sm btn-danger">취소</a>
+            <td width="20%">${vo.rday }</td>
+            <td width="10%">${vo.time }</td>
+            <td width="10%">${vo.inwon }</td>
+            <td width="20%">
+             <c:if test="${vo.ok==0 }">
+              <span class="btn btn-xs btn-default">예약대기</span>
+             </c:if>
+             <c:if test="${vo.ok==1 }">
+              <span class="btn btn-xs btn-danger reserves" data-no="${vo.no}">예약완료</span>
+             </c:if>
+              <a href="../mypage/reserve_cancel.do?no=${vo.no}" class="btn btn-xs btn-warning">취소</a>
             </td>
           </tr>
         </c:forEach>
       </table>
       <table class="print" style="display: none;">
 	    <tr>
-	      <td width=40% rowspan="8" class="text-center">
+	      <td width=40% rowspan="10" class="text-center">
             <img src="" id="img" style="width: 340px;height: 350px" class="img-rounded">
           </td>
 		  <td colspan="2">
 		    <h3><span id="name"></span>&nbsp;<span style="color:orange" id="score"></span></h3>
 	      </td>
+        </tr>
+        <tr>
+		  <td width=15% style="color:gray">예약번호</td>
+		  <td width=45% id="no"></td>
+        </tr>
+        <tr>
+		  <td width=15% style="color:gray">예약일</td>
+		  <td width=45% id="rday"></td>
+        </tr>
+        <tr>
+		  <td width=15% style="color:gray">예약시간</td>
+		  <td width=45% id="time"></td>
+        </tr>
+        <tr>
+		  <td width=15% style="color:gray">예약인원</td>
+		  <td width=45% id="inwon"></td>
+        </tr>
+        <tr>
+		  <td width=15% style="color:gray">예약등록일</td>
+		  <td width=45% id="dbday"></td>
         </tr>
         <tr>
 		  <td width=15% style="color:gray">주소</td>
@@ -96,28 +122,11 @@ $(function() {
 		  <td width=45% id="type"></td>
         </tr>
         <tr>
- 		  <td width=15% style="color:gray">가격대</td>
-		  <td width=45% id="price"></td>
-        </tr>
-        <tr>
  		  <td width=15% style="color:gray">주차</td>
  		  <td width=45% id="parking"></td>
         </tr>
-	    <tr>
- 		  <td width=15% style="color:gray">영업시간</td>
- 		  <td width=45% id="time"></td>
-	    </tr>
-        <tr>
-		  <td width=15% style="color:gray">테마</td>
- 		  <td width=45% id="theme"></td>
-		</tr>
       </table>
-      <table class="print">
-        <tr>
- 		  <td id="content"></td>
-		</tr>
-	  </table>
     </div>
-  </main>
+   </main>
 </body>
 </html>
