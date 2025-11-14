@@ -5,4 +5,30 @@
     INSERT INTO cart
     VALUES(cart_no_seq.nextval, #{gno}, #{id}, #{account}, 0, SYSDATE)
   </insert>
+  
+  <update id="cartUpdate" parameterType="CartVO">
+    UPDATE cart
+    SET account=account+#{account}
+    WHERE gno=#{gno} AND id=#{id}
+  </update>
+  
+  <select id="cartCount" resultType="int" parameterType="CartVO">
+    SELECT COUNT(*)
+    FROM cart
+    WHERE gno=#{gno} AND id=#{id} 
+  </select>
+  
+  <resultMap type="CartVO" id="cartMap">
+    <result column="goods_poster" property="gvo.goods_poster"/>
+    <result column="goods_name" property="gvo.goods_name"/>
+    <result column="goods_price" property="gvo.goods_price"/>
+  </resultMap>
+  
+  <select id="cartMyListData" resultMap="cartMap" parameterType="string">
+    SELECT cart.no, goods_poster, goods_name, goods_price, account, TO_CHAR(regdate, 'YYYY-MM-DD') AS dbday
+    FROM cart, goods_all
+    WHERE cart.gno=goods_all.no
+    AND id=#{id}
+    ORDER BY no DESC
+  </select>
 </mapper>

@@ -133,6 +133,10 @@ public class GoodsModel {
     	// #{no} ${goods}
     	map.put("goods", table_name[Integer.parseInt(cno)]);
     	GoodsVO vo = GoodsDAO.goodsDetailData(map);
+    	String price = vo.getGoods_price();
+    	price = price.replaceAll("[^0-9]", "");
+    	
+    	vo.setPrice(Integer.parseInt(price));
     	
     	request.setAttribute("vo", vo);
     	request.setAttribute("cno", cno);
