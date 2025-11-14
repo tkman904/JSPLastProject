@@ -173,10 +173,11 @@
     </div>
     <ul class="menu">
       <li><a href="../mypage/mypage_main.do" class="active">회원 정보</a></li>
-      <li><a href="../jjim/jjim_list.do">찜 내역</a></li>
-      <li><a href="../mypage/mypage_reserve.do">예약 내역</a></li>
+      <li><a href="../jjim/jjim_list.do">찜한 목록</a></li>
+      <li><a href="../mypage/mypage_reserve.do">예약 목록</a></li>
+      <li><a href="../mypage/mypage_cart.do">장바구니</a></li>
       <li><a href="#">결제 내역</a></li>
-      <li><a href="#">묻고답하기 내역</a></li>
+      <li><a href="#">커뮤니티 관리</a></li>
       <li><a href="#">회원 탈퇴</a></li>
     </ul>
   </aside>

@@ -134,6 +134,13 @@ public class FoodModel {
 		   request.setAttribute("jCount", jCount);
 	   }
 	   
+	   Map map = new HashMap();
+	   map.put("cno", fno);
+	   map.put("type", 1);
+	   List<ReviewVO> reList = ReviewDAO.reviewListData(map);
+	   
+	   request.setAttribute("rCount", reList.size());
+	   request.setAttribute("reList", reList);
 	   request.setAttribute("main_jsp", "../food/detail.jsp");
 	   return "../main/main.jsp";
    }
