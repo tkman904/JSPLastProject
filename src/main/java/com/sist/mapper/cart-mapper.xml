@@ -31,4 +31,9 @@
     AND id=#{id}
     ORDER BY no DESC
   </select>
+  
+  <delete id="cartCancel" parameterType="int">
+    DELETE FROM cart
+    WHERE no=#{no}
+  </delete>
 </mapper>

@@ -39,7 +39,7 @@ $(function() {
             <td width="10%">${vo.dbday}</td>
             <td width="20%">
               <span class="btn btn-xs btn-default">결제</span>
-              <a href="#" class="btn btn-xs btn-warning">취소</a>
+              <a href="../cart/cart_cancel.do?no=${vo.no}" class="btn btn-xs btn-warning">취소</a>
             </td>
           </tr>
         </c:forEach>

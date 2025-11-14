@@ -43,4 +43,13 @@ public class CartModel {
 		request.setAttribute("main_jsp", "../mypage/mypage_main.jsp");
 		return "../main/main.jsp";
 	}
+	
+	@RequestMapping("cart/cart_cancel.do")
+    public String cart_cancel(HttpServletRequest request, HttpServletResponse response) {
+		String no = request.getParameter("no");
+		
+		CartDAO.cartCancel(Integer.parseInt(no));
+		
+		return "redirect:../mypage/cart_list.do";
+	}
 }
