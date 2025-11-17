@@ -29,7 +29,41 @@ public class GoodsModel {
 		"신상품 목록",
 		"특가 상품 목록"
 	};
-			
+	
+	@RequestMapping("goods/buy.do")
+	public String goods_buy(HttpServletRequest request, HttpServletResponse response) {
+		String gno = request.getParameter("gno");
+		String account = request.getParameter("account");
+		
+		HttpSession session = request.getSession();
+		String id = (String)session.getAttribute("id");
+		
+		Map map = new HashMap();
+		map.put("no", gno);
+		map.put("goods", "goods_all");
+		
+		GoodsVO gvo = GoodsDAO.goodsDetailData(map);
+		MemberVO mvo = MemberDAO.memberInfoData(id);
+
+		// cart.jsp에 데이터 전송
+		// Model => return에 있는 jsp가 받는다
+		// => include => 공유가 가능
+		request.setAttribute("mvo", mvo);
+		request.setAttribute("gvo", gvo);
+		request.setAttribute("account", account);
+		
+		String strPrice = gvo.getGoods_price();
+		strPrice = strPrice.replaceAll("[^0-9]", "");
+		// 30,000원 => 30000
+		int price = Integer.parseInt(strPrice);
+		int total = price*Integer.parseInt(account);
+		
+		request.setAttribute("price", price);
+		request.setAttribute("total", total);
+		
+		return "../goods/cart.jsp";
+	}
+	
     @RequestMapping("goods/list.do")
     public String goods_list(HttpServletRequest request,HttpServletResponse response) {
 	   String page = request.getParameter("page");

@@ -80,6 +80,10 @@
 <script type="text/javascript" src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript">
 let sel = 0
+Shadowbox.init({
+	players:['iframe']
+})
+
 $(function() {
 	$('#sel').change(function() {
 		let account = $('#sel').val()
@@ -102,6 +106,24 @@ $(function() {
 		let account = $('#sel').val()
 		$('#account').val(account)
 		$('#frm').submit()
+	})
+	
+	$('#buy').click(function(){
+		if(sel==0) {
+			alert("수량을 선택하세요")
+			return
+		}
+		
+		let account = $('#sel').val()
+		let gno = $('#gno').val()
+		
+		Shadowbox.open({
+			content:'../goods/buy.do?gno='+gno+"&account="+account,
+			player:'iframe',
+			width:960,
+			height:750,
+			title:'결제 내역'
+		})
 	})
 })
 
