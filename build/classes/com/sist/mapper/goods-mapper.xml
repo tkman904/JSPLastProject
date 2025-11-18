@@ -35,4 +35,9 @@
     SELECT * FROM ${goods}
     WHERE no=#{no}
   </select>
+  
+  <insert id="orderInsert" parameterType="OrdersVO">
+    INSERT INTO mvcOrders
+    VALUES(order_no_seq.nextval, #{gno}, #{id}, #{name}, #{post}, #{addr1}, #{addr2}, #{msg}, #{account}, SYSDATE)
+  </insert>
 </mapper>

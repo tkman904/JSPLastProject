@@ -179,4 +179,56 @@ public class GoodsModel {
     	request.setAttribute("main_jsp", "../goods/detail.jsp");
     	return "../main/main.jsp";
     }
+        
+    @RequestMapping("goods/buy_ok.do")
+    public void goods_buy_ok(HttpServletRequest request, HttpServletResponse response) {
+    	String gno = request.getParameter("gno");
+    	String account = request.getParameter("account");
+    	String price = request.getParameter("price");
+    	String post = request.getParameter("post");
+    	String addr1 = request.getParameter("addr1");
+    	String addr2 = request.getParameter("addr2");
+    	String msg = request.getParameter("msg");
+    	
+    	HttpSession session = request.getSession();
+    	String id = (String)session.getAttribute("id");
+    	String name = (String)session.getAttribute("name");
+    	
+    	OrdersVO vo = new OrdersVO();
+    	vo.setId(id);
+    	vo.setName(name);
+    	vo.setMsg(msg);
+    	vo.setAddr1(addr1);
+    	vo.setAddr2(addr2);
+    	vo.setPost(post);
+    	vo.setAccount(Integer.parseInt(account));
+    	vo.setGno(Integer.parseInt(gno));
+    	price = price.replaceAll("[^0-9]", "");
+    	vo.setPrice(Integer.parseInt(price));
+    	
+    	// DB 연동
+//    	GoodsDAO.
+    	
+    	/*
+    	 * 	 웹 사이트
+    	 *   = 아이템 설정
+    	 *   = 요구사항 (기능)
+    	 *   = 페이지 분석 => 필요한 데이터 추출
+    	 *   = 데이터 설계 => ERD
+    	 *     ----------------
+    	 *     | 화면 UI
+    	 *     | 사용자가 보내주는 데이터
+    	 *     | => 테이블
+    	 *     | => 찾는 경우 : primary key
+    	 *   ------------------------------- DBA
+    	 *   = 화면 UI
+    	 *   ------------------------------- 퍼블리셔
+    	 *   = 구현 (기능)
+    	 *   ------------------------------- 웹 개발자
+    	 *   = 테스트
+    	 *   ------------------------------- 테스터
+    	 *   = 배포
+    	 *   ------------------------------- SE (DevOps)
+    	 */
+    }
 }
