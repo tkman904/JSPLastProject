@@ -9,6 +9,7 @@ import com.sist.controller.Controller;
 import com.sist.controller.RequestMapping;
 import com.sist.dao.*;
 import com.sist.vo.FoodVO;
+import com.sist.vo.OrdersVO;
 import com.sist.vo.ReserveVO;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,37 +18,37 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class MyPageModel {
-  @RequestMapping("mypage/mypage_main.do")
-  public String mypage_main(HttpServletRequest request,HttpServletResponse response) {
-	  request.setAttribute("mypage_jsp", "../mypage/mypage_home.jsp");
-	  request.setAttribute("main_jsp", "../mypage/mypage_main.jsp");
-	  return "../main/main.jsp";
+	@RequestMapping("mypage/mypage_main.do")
+	public String mypage_main(HttpServletRequest request,HttpServletResponse response) {
+		request.setAttribute("mypage_jsp", "../mypage/mypage_home.jsp");
+		request.setAttribute("main_jsp", "../mypage/mypage_main.jsp");
+		return "../main/main.jsp";
+	}
+  
+	@RequestMapping("mypage/mypage_reserve.do")
+	public String mypage_reserve(HttpServletRequest request,HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		String id = (String)session.getAttribute("id");
+		List<ReserveVO> rList = MyPageDAO.reserveMyPageListData(id);
+	  
+		request.setAttribute("rList", rList);
+	  
+		request.setAttribute("mypage_jsp", "../mypage/mypage_reserve.jsp");
+		request.setAttribute("main_jsp", "../mypage/mypage_main.jsp");
+		return "../main/main.jsp";
   }
   
-  @RequestMapping("mypage/mypage_reserve.do")
-  public String mypage_reserve(HttpServletRequest request,HttpServletResponse response) {
-	  HttpSession session = request.getSession();
-	  String id = (String)session.getAttribute("id");
-	  List<ReserveVO> rList = MyPageDAO.reserveMyPageListData(id);
+	@RequestMapping("mypage/reserve_cancel.do")
+	public String mypage_reserve_cancel(HttpServletRequest request,HttpServletResponse response) {
+		String no = request.getParameter("no");
 	  
-	  request.setAttribute("rList", rList);
+		// DB연동
+		MyPageDAO.reserveCancel(Integer.parseInt(no));
 	  
-	  request.setAttribute("mypage_jsp", "../mypage/mypage_reserve.jsp");
-	  request.setAttribute("main_jsp", "../mypage/mypage_main.jsp");
-	  return "../main/main.jsp";
-  }
+		return "redirect:../mypage/mypage_reserve.do";
+	}
   
-  @RequestMapping("mypage/reserve_cancel.do")
-  public String mypage_reserve_cancel(HttpServletRequest request,HttpServletResponse response) {
-	  String no = request.getParameter("no");
-	  
-	  // DB연동
-	  MyPageDAO.reserveCancel(Integer.parseInt(no));
-	  
-	  return "redirect:../mypage/mypage_reserve.do";
-  }
-  
-  @RequestMapping("mypage/reserve_detail.do")
+	@RequestMapping("mypage/reserve_detail.do")
 	public void reserve_detail(HttpServletRequest request, HttpServletResponse response) {
 		String no = request.getParameter("no");
 		ReserveVO vo = MyPageDAO.reserveOkData(Integer.parseInt(no));
@@ -72,5 +73,30 @@ public class MyPageModel {
 		} catch(Exception ex) {
 			ex.printStackTrace();
 		}
+	}
+  
+	@RequestMapping("mypage/buy_list.do")
+	public String buy_list(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		String id = (String)session.getAttribute("id");
+		List<OrdersVO> gList = GoodsDAO.orderListData(id);
+	  
+		request.setAttribute("gList", gList);
+	  
+		request.setAttribute("mypage_jsp", "../mypage/buy_list.jsp");
+		request.setAttribute("main_jsp", "../mypage/mypage_main.jsp");
+		return "../main/main.jsp";
+	}
+	
+	@RequestMapping("mypage/buy_detail.do")
+	public String buy_detail(HttpServletRequest request, HttpServletResponse response) {
+		String no = request.getParameter("no");
+		OrdersVO vo = GoodsDAO.orderDetailData(Integer.parseInt(no));
+		
+		request.setAttribute("gvo", vo);
+		
+		request.setAttribute("mypage_jsp", "../mypage/buy_detail.jsp");
+		request.setAttribute("main_jsp", "../mypage/mypage_main.jsp");
+		return "../main/main.jsp";
 	}
 }

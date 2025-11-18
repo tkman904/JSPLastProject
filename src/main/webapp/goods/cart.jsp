@@ -181,7 +181,7 @@ var IMP = window.IMP;
 IMP.init("imp40768127");
 function requestPay() {
     IMP.request_pay({
-        pg: "tosspayments",
+        pg: "kakaopay",
         pay_method: "card",
         merchant_uid: "ORD20180131-0000011",   // 주문번호
         name: $('#buys').attr("data-cont"),
@@ -192,6 +192,9 @@ function requestPay() {
         buyer_addr: $('#addr1').val(),
         buyer_postcode: $('#post').val()
     }, function (rsp) { // callback
+    	alert("구매가 완료되었습니다.\n마이페이지에서 확인하세요")
+    	//window.location.href = "../mypage/buy_list.do"
+    	parent.Shadowbox.close()
     });
 }
 
@@ -211,7 +214,6 @@ $(function() {
 			data:{"gno":gno,"account":account,"price":price,"post":post,"addr1":addr1,"addr2":addr2,"msg":msg},
 			success:function() {
 				requestPay()
-				alert("구매가 완료되었습니다")
 			}
 		})
 	})

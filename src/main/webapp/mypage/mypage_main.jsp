@@ -176,7 +176,7 @@
       <li><a href="../jjim/jjim_list.do">찜한 목록</a></li>
       <li><a href="../mypage/mypage_reserve.do">예약 목록</a></li>
       <li><a href="../mypage/cart_list.do">장바구니</a></li>
-      <li><a href="#">결제 내역</a></li>
+      <li><a href="../mypage/buy_list.do">결제 내역</a></li>
       <li><a href="#">커뮤니티 관리</a></li>
       <li><a href="#">회원 탈퇴</a></li>
     </ul>

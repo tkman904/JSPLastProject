@@ -207,7 +207,7 @@ public class GoodsModel {
     	vo.setPrice(Integer.parseInt(price));
     	
     	// DB 연동
-//    	GoodsDAO.
+    	GoodsDAO.orderInsert(vo);
     	
     	/*
     	 * 	 웹 사이트

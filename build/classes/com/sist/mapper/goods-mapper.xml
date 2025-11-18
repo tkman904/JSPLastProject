@@ -40,4 +40,26 @@
     INSERT INTO mvcOrders
     VALUES(order_no_seq.nextval, #{gno}, #{id}, #{name}, #{post}, #{addr1}, #{addr2}, #{msg}, #{account}, SYSDATE)
   </insert>
+  
+  <resultMap type="OrdersVO" id="orderMap">
+    <result column="goods_poster" property="gvo.goods_poster"/>
+    <result column="goods_name" property="gvo.goods_name"/>
+    <result column="goods_price" property="gvo.goods_price"/>
+  </resultMap>
+  
+  <select id="orderListData" resultMap="orderMap" parameterType="string">
+    SELECT mo.no, gno, goods_poster, goods_name, goods_price, account,
+    		TO_CHAR(regdate, 'YYYY-MM-DD') AS dbday 
+    FROM mvcOrders mo, goods_all ga
+    WHERE mo.gno = ga.no
+    AND id = #{id}
+  </select>
+  
+  <select id="orderDetailData" resultMap="orderMap" parameterType="int">
+    SELECT mo.no, gno, goods_poster, goods_name, goods_price, account,
+    		TO_CHAR(regdate, 'YYYY-MM-DD') AS dbday, name, post, addr1, addr2, msg 
+    FROM mvcOrders mo, goods_all ga
+    WHERE mo.gno = ga.no
+    AND mo.no = #{no}
+  </select>
 </mapper>
