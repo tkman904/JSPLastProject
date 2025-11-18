@@ -110,7 +110,48 @@
   background: #e5e7eb;
   border-color: #d1d5db;
 }
+/* 네비 (이전/다음/목록) */
+.detail-nav {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
 
+.btn {
+  padding: 9px 14px;
+  background: #f3f4f6;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #111827;
+  font-weight: 600;
+  transition: 0.12s ease;
+}
+.btn:hover {
+  background: #e5e7eb;
+}
+.btn.primary {
+  background: #2563eb;
+  color: white;
+}
+.btn.primary:hover {
+  background: #1e4ed8;
+}
+
+/* 모바일 */
+@media (max-width: 640px) {
+  .notice-detail-wrap {
+    margin: 12px;
+    padding: 18px;
+  }
+  .detail-meta {
+    gap: 6px;
+    font-size: 0.85rem;
+  }
+  .btn.nav-btn {
+    font-size: 0.85rem;
+    padding: 8px 12px;
+  }
+}
 /* 반응형 */
 @media (max-width: 640px) {
   .col-writer, .col-view {
@@ -123,7 +164,10 @@
 <body>
 <section class="notice-table-wrap">
   <h2 class="notice-title">공지사항</h2>
-
+  <div class="detail-nav">
+    <a href="notice_insert.jsp" class="btn primary nav-btn">등록</a>
+  </div>
+  <div style="height: 10px;"></div>
   <table class="notice-table">
     <thead>
       <tr>
@@ -135,7 +179,6 @@
         <th class="col-view">조회수</th>
       </tr>
     </thead>
-
     <tbody>
       <tr>
         <td>15</td>

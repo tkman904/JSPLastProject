@@ -12,7 +12,8 @@ $(function() {
 		$(this).css("cursor", "pointer")
 	})
 	$('.dataTr').click(function() {
-		
+		let no = $(this).attr("data-no")
+		location.href = "../mypage/buy_detail.do?no="+no
 	})
 })
 </script>
