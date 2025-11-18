@@ -69,4 +69,42 @@ public class GoodsDAO {
 		session.close();
 		return vo;
 	}
+	
+	/*
+	      <insert id="orderInsert" parameterType="OrdersVO">
+		    INSERT INTO mvcOrders
+		    VALUES(order_no_seq.nextval, #{gno}, #{id}, #{name}, #{post}, #{addr1}, #{addr2}, #{msg}, #{account}, SYSDATE)
+		  </insert>
+		  
+		  => JSP (링크 => <a> <form>, ajax) : 요청 사항
+		  => mapper.xml => SQL
+		                    | 연습
+		  => DAO
+		  => MODEL
+		  => 해당 JSP에 값을 출력
+		  => 화면 유지 : ajax / vue / react
+		  => JSP => 서버 => JSP
+		      |             |
+		      --------------- 다른 JSP new className()
+		                              ---------------
+		      => Spring Framework
+		         Spring-Boot
+		         ----------------------- VueJS
+		      => Spring-Boot / VSCode
+		            |            |
+		           서버         클라이언트 (Vue / React)
+		            |            |
+		            --------------
+		                   |
+		                  JSON
+	 */
+	public static void orderInsert(OrdersVO vo) {
+		try {
+			SqlSession session = ssf.openSession(true);
+			session.insert("orderInsert", vo);
+			session.close();
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+	}
 }
