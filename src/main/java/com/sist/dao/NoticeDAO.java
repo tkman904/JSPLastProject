@@ -66,4 +66,31 @@ public class NoticeDAO {
 		}
 		return total;
 	}
+	
+	/*
+       <update id="noticeHitIncrement" parameterType="int">
+	     UPDATE notice
+		 SET hit = hit+1
+	     WHERE no = #{no}
+	   </update>
+	   
+	   <select id="noticeDetailData" resultType="NoticeVO" parameterType="int">
+	     SELECT *
+	     FROM notice
+	     WHERE no = #{no}
+	   </select>
+	 */
+	public static NoticeVO noticeDetailData(int no) {
+		NoticeVO vo = null;
+		try {
+			SqlSession session = ssf.openSession();
+			session.update("noticeHitIncrement", no);
+			session.commit();
+			vo = session.selectOne("noticeDetailData", no);
+			session.close();
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		return vo;
+	}
 }

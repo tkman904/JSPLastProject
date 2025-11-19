@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,7 +9,7 @@
 <style>
 /* 컨테이너 */
 .notice-table-wrap {
-  max-width: 980px;
+  width: 980px;
   margin: 20px auto;
   background: #fff;
   border-radius: 12px;
@@ -60,12 +61,12 @@
 }
 
 /* 컬럼 너비 */
-.col-no { width: 60px; }
-.col-type { width: 90px; }
+.col-no { width: 100px; }
+.col-type { width: 130px; }
 .col-title { width: auto; }
-.col-writer { width: 120px; }
-.col-date { width: 130px; }
-.col-view { width: 90px; }
+.col-writer { width: 150px; }
+.col-date { width: 180px; }
+.col-view { width: 120px; }
 
 /* 행 hover */
 .notice-table tbody tr:hover {
@@ -110,6 +111,8 @@
   background: #e5e7eb;
   border-color: #d1d5db;
 }
+
+
 /* 네비 (이전/다음/목록) */
 .detail-nav {
   display: flex;
@@ -135,22 +138,6 @@
 }
 .btn.primary:hover {
   background: #1e4ed8;
-}
-
-/* 모바일 */
-@media (max-width: 640px) {
-  .notice-detail-wrap {
-    margin: 12px;
-    padding: 18px;
-  }
-  .detail-meta {
-    gap: 6px;
-    font-size: 0.85rem;
-  }
-  .btn.nav-btn {
-    font-size: 0.85rem;
-    padding: 8px 12px;
-  }
 }
 /* 반응형 */
 @media (max-width: 640px) {
@@ -180,41 +167,37 @@
       </tr>
     </thead>
     <tbody>
+      <c:forEach var="vo" items="${list}">
+        <c:choose>
+          <c:when test="${vo.state=='normal'}">
+            <c:set var="state" value="일반"/>
+          </c:when>
+          <c:when test="${vo.state=='emergency'}">
+            <c:set var="state" value="긴급"/>
+          </c:when>
+          <c:when test="${vo.state=='maintain'}">
+            <c:set var="state" value="점검"/>
+          </c:when>
+          <c:when test="${vo.state=='event'}">
+            <c:set var="state" value="이벤트"/>
+          </c:when>
+        </c:choose>
       <tr>
-        <td>15</td>
-        <td><span class="badge badge-emergency">긴급</span></td>
-        <td class="title-cell"><a href="../admin/notice_detail.do">서버 장애 발생 안내</a></td>
-        <td>관리자</td>
-        <td>2025-11-11</td>
-        <td>342</td>
+        <td>${vo.no}</td>
+        <td><span class="badge badge-${vo.state}">${state}</span></td>
+        <td class="title-cell"><a href="../admin/notice_detail.do?no=${vo.no}">${vo.subject}</a></td>
+        <td>${vo.name}</td>
+        <td>${vo.dbday}</td>
+        <td>${vo.hit}</td>
       </tr>
-
-      <tr>
-        <td>14</td>
-        <td><span class="badge badge-maintain">점검</span></td>
-        <td class="title-cell"><a href="#">11월 시스템 점검 일정</a></td>
-        <td>관리자</td>
-        <td>2025-11-02</td>
-        <td>132</td>
-      </tr>
-
-      <tr>
-        <td>13</td>
-        <td><span class="badge badge-event">이벤트</span></td>
-        <td class="title-cell"><a href="#">블랙프라이데이 할인 안내</a></td>
-        <td>마케팅팀</td>
-        <td>2025-11-01</td>
-        <td>88</td>
-      </tr>
-
-      <tr>
-        <td>12</td>
-        <td><span class="badge badge-normal">일반</span></td>
-        <td class="title-cell"><a href="#">새로운 기능 업데이트</a></td>
-        <td>관리자</td>
-        <td>2025-10-29</td>
-        <td>201</td>
-      </tr>
+	  </c:forEach>
+	  <tr>
+	    <td colspan="6" class="text-center">
+	      <a href="../admin/notice_list.do?page=${curpage>1 ? curpage-1 : curpage}">이전</a>
+	      ${curpage} page / ${totalpage} pages
+	      <a href="../admin/notice_list.do?page=${curpage<totalpage ? curpage+1 : curpage}">다음</a>
+	    </td>
+	  </tr>
     </tbody>
   </table>
 </section>

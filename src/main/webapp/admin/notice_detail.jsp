@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -129,41 +130,52 @@
 <section class="notice-detail-wrap">
 
   <!-- 제목 -->
-  <h2 class="detail-title">서버 점검 안내</h2>
+  <h2 class="detail-title">${vo.subject}</h2>
 
   <!-- 메타 영역 -->
   <div class="detail-meta">
-    <span class="badge badge-maintain">점검</span>
-    <span class="meta-item">작성자: 관리자</span>
-    <span class="meta-item">등록일: 2025-11-10</span>
-    <span class="meta-item">조회수: 123</span>
+    <c:choose>
+          <c:when test="${vo.state=='normal'}">
+            <c:set var="state" value="일반"/>
+          </c:when>
+          <c:when test="${vo.state=='emergency'}">
+            <c:set var="state" value="긴급"/>
+          </c:when>
+          <c:when test="${vo.state=='maintain'}">
+            <c:set var="state" value="점검"/>
+          </c:when>
+          <c:when test="${vo.state=='event'}">
+            <c:set var="state" value="이벤트"/>
+          </c:when>
+        </c:choose>
+    <span class="badge badge-${vo.state}">${state}</span>
+    <span class="meta-item">작성자: ${vo.name}</span>
+    <span class="meta-item">등록일: ${vo.dbday}</span>
+    <span class="meta-item">조회수: ${vo.hit}</span>
   </div>
 
   <!-- 본문 -->
   <article class="detail-content">
-    <p>
-      안녕하세요.<br>
-      아래 일정에 따라 시스템 점검이 진행될 예정입니다.<br><br>
-
-      - 점검 일시: 2025년 11월 12일 01:00 ~ 06:00<br>
-      - 영향 범위: 로그인 및 일부 서비스 이용 제한<br><br>
-
-      보다 안정적인 서비스를 제공하기 위한 조치이니 양해 부탁드립니다.
-    </p>
+    <pre style="white-space: pre-wrap;">${vo.content}</pre>
   </article>
 
   <!-- 첨부파일 -->
-  <div class="detail-attach">
-    <span class="attach-title">첨부파일</span>
-    <ul class="attach-list">
-      <li><a href="#">점검_안내문.pdf</a></li>
-      <li><a href="#">서비스중단_공지.png</a></li>
-    </ul>
-  </div>
+  <c:if test="${vo.filecount>0}">
+    <div class="detail-attach">
+      <span class="attach-title">첨부파일</span>
+      <ul class="attach-list">
+        <c:forTokens items="${vo.filename}" delims="," var="files">
+          <li>${files}</li>
+        </c:forTokens>
+      </ul>
+    </div>
+  </c:if>
 
   <!-- 이전 / 다음 / 목록 -->
   <div class="detail-nav">
-    <a href="#" class="btn primary nav-btn">목록</a>
+    <a href="../admin/notice_update.do" class="btn primary nav-btn">수정</a>
+    <a href="../admin/notice_delete.do" class="btn primary nav-btn">삭제</a>
+    <a href="../admin/notice_list.do" class="btn primary nav-btn">목록</a>
   </div>
 </section>
 

@@ -3,7 +3,7 @@
 <mapper namespace="com.sist.mapper.notice-mapper">
   <insert id="noticeInsert" parameterType="NoticeVO">
     INSERT INTO notice
-    VALUES(notice_no_seq.nextval, #{state}, #{name}, #{subject}, #{content}, SYSDATE, 0, #{filename}, #{filesize})
+    VALUES(notice_no_seq.nextval, #{state}, #{name}, #{subject}, #{content}, SYSDATE, 0, #{filename}, #{filesize}, #{filecount})
   </insert>
   
   <select id="noticeListData" resultType="NoticeVO" parameterType="int">
@@ -23,4 +23,15 @@
   		수정
   		삭제
    -->
+   <update id="noticeHitIncrement" parameterType="int">
+     UPDATE notice
+	 SET hit = hit+1
+     WHERE no = #{no}
+   </update>
+   
+   <select id="noticeDetailData" resultType="NoticeVO" parameterType="int">
+     SELECT no, name, subject, content, hit, filename, filesize, filecount, TO_CHAR(regdate, 'YYYY-MM-DD HH24:MI:SS') AS dbday
+     FROM notice
+     WHERE no = #{no}
+   </select>
 </mapper>

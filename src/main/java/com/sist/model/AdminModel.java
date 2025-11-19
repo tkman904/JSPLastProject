@@ -134,6 +134,7 @@ public class AdminModel {
 			 */
 			String fn = "";
 			String fs = "";
+			int count = 0;
 			
 			for(Part part:request.getParts()) {
 				if("images".equals(part.getName()) && part.getSize() > 0) {
@@ -151,6 +152,7 @@ public class AdminModel {
 					File dbfile = new File(savePath);
 					fn += fileName + ",";
 					fs += dbfile.length() + ",";
+					count++;
 				}
 			}
 			
@@ -158,11 +160,13 @@ public class AdminModel {
 				System.out.println("파일 업로드가 없습니다");
 				vo.setFilename("");
 				vo.setFilesize("");
+				vo.setFilecount(0);
 			} else {
 				fn = fn.substring(0, fn.lastIndexOf(","));
 				fs = fs.substring(0, fs.lastIndexOf(","));
 				vo.setFilename(fn);
 				vo.setFilesize(fs);
+				vo.setFilecount(count);
 				System.out.println(fn);
 				System.out.println(fs);
 			}
@@ -179,6 +183,27 @@ public class AdminModel {
 	// 공지상세보기
 	@RequestMapping("admin/notice_detail.do")
 	public String admin_notice_detail(HttpServletRequest request,HttpServletResponse response) {
+		// <form> <a>, ajax
+		/*
+		 * 	 <a href=".do?no=1">
+		 *   <form action="">
+		 *               ---- 값을 받는다
+		 *   => input / select / textarea
+		 *      | hidden 포함
+		 *   ajax
+		 *     => data:{"no":1} => ?no=1
+		 *   axios : Vue / React => fetch
+		 *           ----------- 화면 UI
+		 *     => params:{"no":1}
+		 */
+		
+		String no = request.getParameter("no");
+		
+		// DB 연동
+		NoticeVO vo = NoticeDAO.noticeDetailData(Integer.parseInt(no));
+		
+		request.setAttribute("vo", vo);
+		
 		request.setAttribute("admin_jsp", "../admin/notice_detail.jsp");
 		return "../admin/admin_main.jsp";
 	}
