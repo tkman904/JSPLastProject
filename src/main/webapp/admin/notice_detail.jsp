@@ -127,57 +127,55 @@
 </style>
 </head>
 <body>
-<section class="notice-detail-wrap">
+  <section class="notice-detail-wrap">
+    <!-- 제목 -->
+    <h2 class="detail-title">${vo.subject}</h2>
 
-  <!-- 제목 -->
-  <h2 class="detail-title">${vo.subject}</h2>
-
-  <!-- 메타 영역 -->
-  <div class="detail-meta">
-    <c:choose>
-          <c:when test="${vo.state=='normal'}">
-            <c:set var="state" value="일반"/>
-          </c:when>
-          <c:when test="${vo.state=='emergency'}">
-            <c:set var="state" value="긴급"/>
-          </c:when>
-          <c:when test="${vo.state=='maintain'}">
-            <c:set var="state" value="점검"/>
-          </c:when>
-          <c:when test="${vo.state=='event'}">
-            <c:set var="state" value="이벤트"/>
-          </c:when>
-        </c:choose>
-    <span class="badge badge-${vo.state}">${state}</span>
-    <span class="meta-item">작성자: ${vo.name}</span>
-    <span class="meta-item">등록일: ${vo.dbday}</span>
-    <span class="meta-item">조회수: ${vo.hit}</span>
-  </div>
-
-  <!-- 본문 -->
-  <article class="detail-content">
-    <pre style="white-space: pre-wrap;">${vo.content}</pre>
-  </article>
-
-  <!-- 첨부파일 -->
-  <c:if test="${vo.filecount>0}">
-    <div class="detail-attach">
-      <span class="attach-title">첨부파일</span>
-      <ul class="attach-list">
-        <c:forTokens items="${vo.filename}" delims="," var="files">
-          <li>${files}</li>
-        </c:forTokens>
-      </ul>
+    <!-- 메타 영역 -->
+    <div class="detail-meta">
+      <c:choose>
+        <c:when test="${vo.state=='normal'}">
+          <c:set var="state" value="일반"/>
+        </c:when>
+        <c:when test="${vo.state=='emergency'}">
+          <c:set var="state" value="긴급"/>
+        </c:when>
+        <c:when test="${vo.state=='maintain'}">
+          <c:set var="state" value="점검"/>
+        </c:when>
+        <c:when test="${vo.state=='event'}">
+          <c:set var="state" value="이벤트"/>
+        </c:when>
+      </c:choose>
+      <span class="badge badge-${vo.state}">${state}</span>
+      <span class="meta-item">작성자: ${vo.name}</span>
+      <span class="meta-item">등록일: ${vo.dbday}</span>
+      <span class="meta-item">조회수: ${vo.hit}</span>
     </div>
-  </c:if>
 
-  <!-- 이전 / 다음 / 목록 -->
-  <div class="detail-nav">
-    <a href="../admin/notice_update.do" class="btn primary nav-btn">수정</a>
-    <a href="../admin/notice_delete.do" class="btn primary nav-btn">삭제</a>
-    <a href="../admin/notice_list.do" class="btn primary nav-btn">목록</a>
-  </div>
-</section>
+    <!-- 본문 -->
+    <article class="detail-content">
+      <pre style="white-space: pre-wrap; background-color: white; border: none;">${vo.content}</pre>
+    </article>
 
+    <!-- 첨부파일 -->
+    <c:if test="${vo.filecount>0}">
+      <div class="detail-attach">
+        <span class="attach-title">첨부파일</span>
+        <ul class="attach-list">
+          <c:forTokens items="${vo.filename}" delims="," var="files">
+            <li>${files}</li>
+          </c:forTokens>
+        </ul>
+      </div>
+    </c:if>
+
+    <!-- 이전 / 다음 / 목록 -->
+    <div class="detail-nav">
+      <a href="../admin/notice_update.do?no=${vo.no}" class="btn primary nav-btn">수정</a>
+      <a href="../admin/notice_delete.do?no=${vo.no}" class="btn primary nav-btn">삭제</a>
+      <a href="../admin/notice_list.do" class="btn primary nav-btn">목록</a>
+    </div>
+  </section>
 </body>
 </html>

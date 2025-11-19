@@ -192,7 +192,7 @@
 
   <!-- 본문 -->
   <article class="detail-content">
-    <pre style="white-space: pre-wrap;">${vo.content}</pre>
+    <pre style="white-space: pre-wrap; background-color: white; border: none;">${vo.content}</pre>
   </article>
 
   <!-- 첨부파일 -->

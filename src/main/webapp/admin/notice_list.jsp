@@ -149,56 +149,56 @@
 </style>
 </head>
 <body>
-<section class="notice-table-wrap">
-  <h2 class="notice-title">공지사항</h2>
-  <div class="detail-nav">
-    <a href="../admin/notice_insert.do" class="btn primary nav-btn">등록</a>
-  </div>
-  <div style="height: 10px;"></div>
-  <table class="notice-table">
-    <thead>
-      <tr>
-        <th class="col-no">번호</th>
-        <th class="col-type">종류</th>
-        <th class="col-title">제목</th>
-        <th class="col-writer">작성자</th>
-        <th class="col-date">등록일</th>
-        <th class="col-view">조회수</th>
-      </tr>
-    </thead>
-    <tbody>
-      <c:forEach var="vo" items="${list}">
-        <c:choose>
-          <c:when test="${vo.state=='normal'}">
-            <c:set var="state" value="일반"/>
-          </c:when>
-          <c:when test="${vo.state=='emergency'}">
-            <c:set var="state" value="긴급"/>
-          </c:when>
-          <c:when test="${vo.state=='maintain'}">
-            <c:set var="state" value="점검"/>
-          </c:when>
-          <c:when test="${vo.state=='event'}">
-            <c:set var="state" value="이벤트"/>
-          </c:when>
-        </c:choose>
-      <tr>
-        <td>${vo.no}</td>
-        <td><span class="badge badge-${vo.state}">${state}</span></td>
-        <td class="title-cell"><a href="../admin/notice_detail.do?no=${vo.no}">${vo.subject}</a></td>
-        <td>${vo.name}</td>
-        <td>${vo.dbday}</td>
-        <td>${vo.hit}</td>
-      </tr>
-	  </c:forEach>
-	  <tr>
-	    <td colspan="6" class="text-center">
-	      <a href="../admin/notice_list.do?page=${curpage>1 ? curpage-1 : curpage}">이전</a>
-	      ${curpage} page / ${totalpage} pages
-	      <a href="../admin/notice_list.do?page=${curpage<totalpage ? curpage+1 : curpage}">다음</a>
-	    </td>
-	  </tr>
-    </tbody>
+  <section class="notice-table-wrap">
+    <h2 class="notice-title">공지사항</h2>
+    <div class="detail-nav">
+      <a href="../admin/notice_insert.do" class="btn primary nav-btn">등록</a>
+    </div>
+    <div style="height: 10px;"></div>
+    <table class="notice-table">
+      <thead>
+        <tr>
+          <th class="col-no">번호</th>
+          <th class="col-type">종류</th>
+          <th class="col-title">제목</th>
+          <th class="col-writer">작성자</th>
+          <th class="col-date">등록일</th>
+          <th class="col-view">조회수</th>
+        </tr>
+      </thead>
+      <tbody>
+        <c:forEach var="vo" items="${list}">
+          <c:choose>
+            <c:when test="${vo.state=='normal'}">
+              <c:set var="state" value="일반"/>
+            </c:when>
+            <c:when test="${vo.state=='emergency'}">
+              <c:set var="state" value="긴급"/>
+            </c:when>
+            <c:when test="${vo.state=='maintain'}">
+              <c:set var="state" value="점검"/>
+            </c:when>
+            <c:when test="${vo.state=='event'}">
+              <c:set var="state" value="이벤트"/>
+            </c:when>
+          </c:choose>
+          <tr>
+            <td>${vo.no}</td>
+            <td><span class="badge badge-${vo.state}">${state}</span></td>
+            <td class="title-cell"><a href="../admin/notice_detail.do?no=${vo.no}">${vo.subject}</a></td>
+            <td>${vo.name}</td>
+            <td>${vo.dbday}</td>
+            <td>${vo.hit}</td>
+          </tr>
+	    </c:forEach>
+	    <tr>
+	      <td colspan="6" class="text-center">
+  	        <a href="../admin/notice_list.do?page=${curpage>1 ? curpage-1 : curpage}">이전</a>
+	        ${curpage} page / ${totalpage} pages
+	        <a href="../admin/notice_list.do?page=${curpage<totalpage ? curpage+1 : curpage}">다음</a>
+	      </td>
+	    </tr>
+      </tbody>
   </table>
 </section>
 
