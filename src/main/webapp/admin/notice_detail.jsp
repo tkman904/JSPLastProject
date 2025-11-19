@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 <style type="text/css">
 .notice-detail-wrap {
-  max-width: 980px;
+  width: 980px;
   margin: 20px auto;
   padding: 24px;
   background: #fff;
@@ -123,23 +123,6 @@
 .btn.primary:hover {
   background: #1e4ed8;
 }
-
-/* 모바일 */
-@media (max-width: 640px) {
-  .notice-detail-wrap {
-    margin: 12px;
-    padding: 18px;
-  }
-  .detail-meta {
-    gap: 6px;
-    font-size: 0.85rem;
-  }
-  .btn.nav-btn {
-    font-size: 0.85rem;
-    padding: 8px 12px;
-  }
-}
-
 </style>
 </head>
 <body>
